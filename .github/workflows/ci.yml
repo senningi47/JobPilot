@@ -36,8 +36,8 @@ jobs:
         with:
           java-version: "17"
           distribution: "temurin"
-      - run: chmod +x gradlew
-      - run: ./gradlew build
+      - uses: gradle/actions/setup-gradle@v4
+      - run: gradle build
         env:
           SPRING_PROFILES_ACTIVE: test
 
