@@ -1,0 +1,44 @@
+# === General ===
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.local
+.env.*.local
+
+# === Frontend (Next.js) ===
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.env.local
+
+# === Backend (Spring Boot) ===
+backend/build/
+backend/.gradle/
+backend/target/
+backend/*.class
+backend/*.jar
+backend/*.war
+
+# === AI Service (Python) ===
+ai-service/__pycache__/
+ai-service/**/__pycache__/
+ai-service/.venv/
+ai-service/venv/
+ai-service/*.pyc
+ai-service/.env
+ai-service/.pytest_cache/
+
+# === IDE ===
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# === Docker ===
+docker-data/
+
+# === OS ===
+.DS_Store
+desktop.ini
