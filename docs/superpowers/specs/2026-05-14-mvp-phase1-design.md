@@ -278,10 +278,11 @@ CREATE TABLE IF NOT EXISTS chat_messages (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     session_id VARCHAR(64) NOT NULL,
     user_id BIGINT NOT NULL,
-    role ENUM('user', 'assistant', 'system') NOT NULL,
+    role ENUM('user', 'assistant') NOT NULL,
     content TEXT NOT NULL,
     intent VARCHAR(50) COMMENT 'LLM 识别的意图: job_search, company_info, resume_help, general',
     model_used VARCHAR(50) COMMENT '使用的模型档位',
+    token_count INT DEFAULT 0 COMMENT '该消息的 token 消耗量',
     metadata JSON COMMENT '额外数据: 来源、置信度等',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
@@ -477,7 +478,7 @@ backend/src/main/java/com/jobpilot/
 | GET | `/jobs/categories` | 获取所有类别列表（工学、理学、…） |
 | GET | `/jobs/categories/{category}/majors` | 获取指定类别下的专业列表 |
 | GET | `/jobs/majors/{major}` | 获取指定专业的完整岗位映射 |
-| GET | `/jobs/search?q=xxx` | 模糊搜索 → Mock LLM 返回排序结果 |
+| GET | `/jobs/search?q=xxx` | 模糊搜索 → Mock LLM 返回排序结果（`q` 参数最大 200 字符，超出截断并提示用户） |
 
 **后端作为代理** — 将类别/专业查询转发给 AI 服务，由 AI 服务从静态 JSON 种子数据中返回。这样 AI 服务成为知识图谱数据的唯一数据源，后续替换为真实 RAG 时无需修改后端。
 
@@ -690,8 +691,10 @@ frontend/src/
 **MVP 阶段：本地 Volume，按用户分目录：**
 
 ```
-/uploads/{user_id}/{原始文件名}
+/uploads/{user_id}/{timestamp}_{原始文件名}
 ```
+
+使用时间戳前缀防止同名文件覆盖。
 
 **存储接口抽象**（为后续 OSS 切换预留）：
 
