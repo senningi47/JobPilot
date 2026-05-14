@@ -92,6 +92,23 @@ CREATE TABLE IF NOT EXISTS chat_sessions (
     INDEX idx_user_sessions (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Chat Messages
+CREATE TABLE IF NOT EXISTS chat_messages (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    session_id VARCHAR(64) NOT NULL,
+    user_id BIGINT NOT NULL,
+    role ENUM('user', 'assistant') NOT NULL,
+    content TEXT NOT NULL,
+    intent VARCHAR(50),
+    model_used VARCHAR(50),
+    token_count INT DEFAULT 0,
+    metadata JSON,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    INDEX idx_session_time (session_id, created_at),
+    INDEX idx_user_sessions (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- Job Alerts
 CREATE TABLE IF NOT EXISTS job_alerts (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
