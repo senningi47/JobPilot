@@ -1,47 +1,47 @@
-# JobPilot MVP Phase 1 — Design Spec
+# JobPilot MVP 第一版 — 设计规格文档
 
-> **Date**: 2026-05-14
-> **Status**: Approved
-> **Scope**: P0 features — Auth, AI Chat, Job Exploration, Company Intelligence, Resume Analysis
-> **Strategy**: Vertical slices, Mock-first LLM, shadcn/ui + Tailwind
+> **日期**：2026-05-14
+> **状态**：已批准
+> **范围**：P0 功能 — 用户认证、AI 对话、岗位探索、公司情报、简历分析
+> **策略**：垂直切片、LLM Mock 优先、shadcn/ui + Tailwind
 
 ---
 
-## 1. Architecture Overview
+## 1. 架构总览
 
-### 1.1 Three-Service Communication
+### 1.1 三服务通信架构
 
 ```
-Browser
+浏览器
   │
   ▼
 Nginx (:80)
-  ├── /           → Frontend (Next.js :3000)
-  ├── /api/v1/*   → Backend (Spring Boot :8080)
-  └── /api/ai/*   → AI Service (FastAPI :8000)
+  ├── /           → 前端 (Next.js :3000)
+  ├── /api/v1/*   → 后端 (Spring Boot :8080)
+  └── /api/ai/*   → AI 服务 (FastAPI :8000)
 ```
 
-**MVP: synchronous HTTP only.** RabbitMQ is deferred — backend calls AI service via HTTP. This simplifies debugging during development. Async message queue is introduced in Phase 2 when Job Alert and background tasks require it.
+**MVP 阶段仅使用同步 HTTP 调用。** RabbitMQ 暂不引入 — 后端通过 HTTP 直接调用 AI 服务，简化开发阶段的调试流程。异步消息队列将在第二版中引入，用于 Job Alert 和后台任务等场景。
 
-### 1.2 Phase Execution Order
+### 1.2 分阶段执行顺序
 
-| Phase | Feature | Key Deliverable |
-|-------|---------|-----------------|
-| A | User Auth | Register, Login, JWT, unified response format |
-| B | AI Chat | Chat UI, Redis + MySQL dual-write history, mock LLM |
-| C | Job Explore | Tag browsing, fuzzy search, static JSON seed data |
-| D | Company Intel | Company card, cached intelligence, mock web search |
-| E | Resume | Upload/parse, analysis scoring, local file storage |
+| 阶段 | 功能 | 关键交付物 |
+|------|------|-----------|
+| A | 用户认证 | 注册、登录、JWT、统一响应格式 |
+| B | AI 对话 | 对话界面、Redis + MySQL 双写历史、Mock LLM |
+| C | 岗位探索 | 标签浏览、模糊搜索、静态 JSON 种子数据 |
+| D | 公司情报 | 公司卡片、情报缓存、Mock 联网搜索 |
+| E | 简历系统 | 上传解析、分析评分、本地文件存储 |
 
-Each phase is a complete vertical slice: DB schema → backend API → AI service (if applicable) → frontend page → tests. A phase is "done" when it can be demonstrated end-to-end in the browser.
+每个阶段是一个完整的垂直切片：数据库 Schema → 后端 API → AI 服务（如适用）→ 前端页面 → 测试。一个阶段"完成"的标准是可以在浏览器中端到端演示。
 
 ---
 
-## 2. Global API Standards (Phase A)
+## 2. 全局 API 规范（阶段 A）
 
-### 2.1 Unified Response Envelope
+### 2.1 统一响应信封
 
-All backend API responses use this envelope:
+所有后端 API 响应使用以下统一格式：
 
 ```json
 {
@@ -52,36 +52,36 @@ All backend API responses use this envelope:
 }
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `code` | int | 0 = success, non-zero = error code |
-| `msg` | string | Human-readable message |
-| `data` | any | Response payload (null on error) |
-| `trace_id` | string | UUID-based request trace ID for debugging |
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `code` | int | 0 = 成功，非零 = 错误码 |
+| `msg` | string | 人类可读的消息 |
+| `data` | any | 响应数据（错误时为 null） |
+| `trace_id` | string | 基于 UUID 的请求追踪 ID，用于调试 |
 
-### 2.2 Error Code Ranges
+### 2.2 错误码范围
 
-| Range | Category | Examples |
-|-------|----------|----------|
-| 0 | Success | — |
-| 1000-1999 | Auth errors | 1001 unauthorized, 1002 token expired, 1003 user exists |
-| 2000-2999 | Business errors | 2001 company not found, 2002 resume parse failed |
-| 5000-5999 | System errors | 5001 internal error, 5002 AI service unavailable |
+| 范围 | 分类 | 示例 |
+|------|------|------|
+| 0 | 成功 | — |
+| 1000-1999 | 认证错误 | 1001 未授权、1002 令牌过期、1003 用户已存在 |
+| 2000-2999 | 业务错误 | 2001 公司未找到、2002 简历解析失败 |
+| 5000-5999 | 系统错误 | 5001 内部错误、5002 AI 服务不可用 |
 
-### 2.3 Standard Error Response
+### 2.3 错误响应示例
 
 ```json
 {
   "code": 1001,
-  "msg": "Token expired, please login again",
+  "msg": "令牌已过期，请重新登录",
   "data": null,
   "trace_id": "a1b2c3d4"
 }
 ```
 
-### 2.4 Pagination Envelope
+### 2.4 分页信封
 
-For list endpoints:
+列表类接口使用以下分页格式：
 
 ```json
 {
@@ -97,9 +97,9 @@ For list endpoints:
 }
 ```
 
-### 2.5 AI Service Response Format
+### 2.5 AI 服务响应格式
 
-AI service returns a simpler envelope (backend wraps it before forwarding to frontend):
+AI 服务返回简化信封（后端在转发给前端前会进行包装）：
 
 ```json
 {
@@ -110,36 +110,36 @@ AI service returns a simpler envelope (backend wraps it before forwarding to fro
 }
 ```
 
-Error variants:
+错误变体：
 ```json
 {
   "status": "empty",
   "data": null,
-  "message": "No results found for the given query"
+  "message": "未找到相关结果，请尝试换个关键词"
 }
 ```
 ```json
 {
   "status": "error",
   "data": null,
-  "message": "LLM service timeout"
+  "message": "AI 服务暂时不可用，请稍后重试"
 }
 ```
 
 ---
 
-## 3. Phase A — User Authentication
+## 3. 阶段 A — 用户认证
 
-### 3.1 Scope
+### 3.1 功能范围
 
-- User registration (username + email + password)
-- User login → JWT token
-- JWT filter on all protected endpoints
-- Frontend: login/register page with form validation
+- 用户注册（用户名 + 邮箱 + 密码）
+- 用户登录 → JWT 令牌
+- JWT 过滤器拦截所有受保护的端点
+- 前端：登录/注册页面，带表单验证
 
-### 3.2 Backend Design
+### 3.2 后端设计
 
-**New files:**
+**新增文件：**
 
 ```
 backend/src/main/java/com/jobpilot/
@@ -151,13 +151,13 @@ backend/src/main/java/com/jobpilot/
 ├── dto/RegisterRequest.java
 ├── dto/LoginRequest.java
 ├── dto/AuthResponse.java
-├── dto/ApiResponse.java          ← unified envelope
+├── dto/ApiResponse.java          ← 统一响应信封
 ├── filter/JwtAuthFilter.java
 ├── util/JwtUtil.java
 └── exception/BusinessException.java
 ```
 
-**UserEntity** maps to the existing `users` table:
+**UserEntity** 映射已有的 `users` 表：
 
 ```java
 @Entity
@@ -165,113 +165,113 @@ backend/src/main/java/com/jobpilot/
 public class UserEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;       // unique
-    private String email;          // unique
-    private String passwordHash;   // BCrypt
+    private String username;       // 唯一
+    private String email;          // 唯一
+    private String passwordHash;   // BCrypt 加密
     private String avatarUrl;
     private String major;
     private Integer graduationYear;
     @Column(columnDefinition = "JSON")
-    private String preferences;    // JSON string
+    private String preferences;    // JSON 字符串
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
 ```
 
-**API Endpoints:**
+**API 端点：**
 
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| POST | `/auth/register` | No | Register new user |
-| POST | `/auth/login` | No | Login, returns JWT |
-| GET | `/auth/me` | Yes | Get current user profile |
+| 方法 | 路径 | 需认证 | 说明 |
+|------|------|--------|------|
+| POST | `/auth/register` | 否 | 注册新用户 |
+| POST | `/auth/login` | 否 | 登录，返回 JWT |
+| GET | `/auth/me` | 是 | 获取当前用户信息 |
 
-**RegisterRequest:** `{ username, email, password, major?, graduationYear? }`
-**LoginRequest:** `{ email, password }`
-**AuthResponse:** `{ token, user: { id, username, email, major } }`
+**RegisterRequest：** `{ username, email, password, major?, graduationYear? }`
+**LoginRequest：** `{ email, password }`
+**AuthResponse：** `{ token, user: { id, username, email, major } }`
 
-**JWT Configuration:**
-- Algorithm: HS256
-- Expiration: 24h (configurable via `app.jwt.expiration`)
-- Claims: `userId`, `username`, `email`
-- Header: `Authorization: Bearer <token>`
+**JWT 配置：**
+- 算法：HS256
+- 过期时间：24 小时（通过 `app.jwt.expiration` 可配置）
+- 声明：`userId`、`username`、`email`
+- 请求头：`Authorization: Bearer <token>`
 
-**JwtAuthFilter** intercepts all requests except `/auth/**` and `/health`, validates token, sets SecurityContext.
+**JwtAuthFilter** 拦截除 `/auth/**` 和 `/health` 以外的所有请求，验证令牌并设置 SecurityContext。
 
-### 3.3 Frontend Design
+### 3.3 前端设计
 
-**New files:**
+**新增文件：**
 
 ```
 frontend/src/
-├── app/login/page.tsx          ← login form
-├── app/register/page.tsx       ← register form
+├── app/login/page.tsx          ← 登录表单
+├── app/register/page.tsx       ← 注册表单
 ├── components/auth/
 │   ├── LoginForm.tsx
 │   └── RegisterForm.tsx
-└── lib/store/authStore.ts      ← zustand store for auth state
+└── lib/store/authStore.ts      ← zustand 认证状态管理
 ```
 
-**Auth flow:**
-1. User submits login form → POST `/api/v1/auth/login`
-2. Response contains JWT token → stored in localStorage
-3. `authStore` (zustand) holds user state, synced with localStorage
-4. API client interceptor already reads token from localStorage (exists in `src/lib/api.ts`)
-5. 401 responses redirect to `/login` (already implemented in interceptor)
+**认证流程：**
+1. 用户提交登录表单 → POST `/api/v1/auth/login`
+2. 响应包含 JWT 令牌 → 存储到 localStorage
+3. `authStore`（zustand）持有用户状态，与 localStorage 同步
+4. API 客户端拦截器已实现从 localStorage 读取令牌（见 `src/lib/api.ts`）
+5. 401 响应自动重定向到 `/login`（拦截器中已实现）
 
-**shadcn/ui components used:** `Button`, `Input`, `Label`, `Card`, `Form`
+**使用到的 shadcn/ui 组件：** `Button`、`Input`、`Label`、`Card`、`Form`
 
-### 3.4 Database Changes
+### 3.4 数据库变更
 
-None — `users` table already exists in `init.sql`. No schema changes needed.
+无 — `users` 表已在 `init.sql` 中定义，无需修改 Schema。
 
 ---
 
-## 4. Phase B — AI Chat Interface
+## 4. 阶段 B — AI 对话界面
 
-### 4.1 Scope
+### 4.1 功能范围
 
-- Chat UI with message bubbles (user + AI)
-- Streaming-style display (typewriter effect, even with mock)
-- Chat history: Redis (active 20 messages) + MySQL (full persistence)
-- Session management (create, list, resume sessions)
-- Mock AI responses covering: normal, empty, error scenarios
+- 对话界面，带消息气泡（用户 + AI）
+- 打字机效果展示（即使是 Mock 也模拟流式输出）
+- 对话历史：Redis（活跃 20 条）+ MySQL（全量持久化）
+- 会话管理（创建、列表、恢复会话）
+- Mock AI 响应覆盖：正常返回、空结果、错误三种场景
 
-### 4.2 Chat History — Dual-Write Strategy
+### 4.2 对话历史 — 双写策略
 
-**Redis (hot cache):**
-- Key pattern: `chat:session:{session_id}:messages`
-- Data structure: Redis List (LPUSH new messages, LTRIM to 20)
-- Each entry: `{ role, content, timestamp }`
-- TTL: 7 days, refreshed on each new message
-- Purpose: fast reads for active conversation context
+**Redis（热缓存）：**
+- 键模式：`chat:session:{session_id}:messages`
+- 数据结构：Redis List（LPUSH 新消息，LTRIM 保留 20 条）
+- 每条记录：`{ role, content, timestamp }`
+- TTL：7 天，每条新消息刷新 TTL
+- 用途：活跃对话上下文的快速读取
 
-**MySQL (persistent):**
-- Table: `chat_messages` (new table, see schema below)
-- Full message history, no TTL
-- Purpose: search, resume sessions, analytics
+**MySQL（持久化）：**
+- 表：`chat_messages`（新增表，见下方 Schema）
+- 完整消息历史，无 TTL
+- 用途：搜索、恢复会话、数据分析
 
-**Write path:**
+**写入路径：**
 ```
-User sends message
-  → Backend writes to MySQL (chat_messages)
-  → Backend LPUSH to Redis list, LTRIM 0..19
-  → Backend calls AI service
-  → AI returns response
-  → Backend writes AI response to MySQL
-  → Backend LPUSH AI response to Redis
-  → Returns to frontend
-```
-
-**Read path (session resume):**
-```
-User opens existing session
-  → Backend checks Redis for cached messages
-  → If Redis has data: return Redis list (fast path)
-  → If Redis miss: load last 20 from MySQL, warm Redis cache, return
+用户发送消息
+  → 后端写入 MySQL（chat_messages）
+  → 后端 LPUSH 到 Redis，LTRIM 0..19
+  → 后端调用 AI 服务
+  → AI 返回响应
+  → 后端将 AI 响应写入 MySQL
+  → 后端 LPUSH AI 响应到 Redis
+  → 返回给前端
 ```
 
-### 4.3 New Database Table
+**读取路径（恢复会话）：**
+```
+用户打开已有会话
+  → 后端检查 Redis 是否有缓存消息
+  → 若 Redis 有数据：返回 Redis 列表（快速路径）
+  → 若 Redis 无数据：从 MySQL 加载最近 20 条，预热 Redis 缓存，返回
+```
+
+### 4.3 新增数据库表
 
 ```sql
 CREATE TABLE IF NOT EXISTS chat_messages (
@@ -280,9 +280,9 @@ CREATE TABLE IF NOT EXISTS chat_messages (
     user_id BIGINT NOT NULL,
     role ENUM('user', 'assistant', 'system') NOT NULL,
     content TEXT NOT NULL,
-    intent VARCHAR(50) COMMENT 'LLM-identified intent: job_search, company_info, resume_help, general',
-    model_used VARCHAR(50) COMMENT 'which LLM tier was used',
-    metadata JSON COMMENT 'extra data: sources, confidence, etc.',
+    intent VARCHAR(50) COMMENT 'LLM 识别的意图: job_search, company_info, resume_help, general',
+    model_used VARCHAR(50) COMMENT '使用的模型档位',
+    metadata JSON COMMENT '额外数据: 来源、置信度等',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     INDEX idx_session_time (session_id, created_at),
@@ -290,11 +290,11 @@ CREATE TABLE IF NOT EXISTS chat_messages (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
-The existing `chat_sessions` table stores session metadata (title, message_count, channel). Messages go in `chat_messages`.
+已有的 `chat_sessions` 表存储会话元数据（标题、消息数、渠道）。消息内容存储在 `chat_messages` 表中。
 
-### 4.4 Backend Design
+### 4.4 后端设计
 
-**New files:**
+**新增文件：**
 
 ```
 backend/src/main/java/com/jobpilot/
@@ -310,51 +310,51 @@ backend/src/main/java/com/jobpilot/
 └── dto/ChatSessionDto.java
 ```
 
-**API Endpoints:**
+**API 端点：**
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/chat/sessions` | Create new session, returns session_id |
-| GET | `/chat/sessions` | List user's sessions (paginated) |
-| GET | `/chat/sessions/{id}/messages` | Get messages for a session |
-| POST | `/chat/sessions/{id}/messages` | Send message, get AI response |
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| POST | `/chat/sessions` | 创建新会话，返回 session_id |
+| GET | `/chat/sessions` | 获取用户会话列表（分页） |
+| GET | `/chat/sessions/{id}/messages` | 获取指定会话的消息 |
+| POST | `/chat/sessions/{id}/messages` | 发送消息，获取 AI 响应 |
 
-**ChatServiceImpl key logic:**
+**ChatServiceImpl 核心逻辑：**
 ```java
 public ChatMessageDto sendMessage(Long userId, String sessionId, String content) {
-    // 1. Save user message to MySQL
-    // 2. LPUSH to Redis, LTRIM to 19 (index 0..19 = 20 items)
-    // 3. Load recent context from Redis (last 10 messages for LLM context)
-    // 4. Call AI service: POST http://ai-service:8000/chat/send
-    // 5. Save AI response to MySQL
-    // 6. LPUSH AI response to Redis
-    // 7. Return AI message DTO
+    // 1. 将用户消息写入 MySQL
+    // 2. LPUSH 到 Redis，LTRIM 0..19（保留 20 条）
+    // 3. 从 Redis 加载最近上下文（最近 10 条消息作为 LLM 上下文）
+    // 4. 调用 AI 服务：POST http://ai-service:8000/chat/send
+    // 5. 将 AI 响应写入 MySQL
+    // 6. LPUSH AI 响应到 Redis
+    // 7. 返回 AI 消息 DTO
 }
 ```
 
-### 4.5 AI Service Design (Mock)
+### 4.5 AI 服务设计（Mock）
 
-**New files:**
+**新增文件：**
 
 ```
 ai-service/app/
 ├── services/mock_data/chat_responses.json
 ├── services/chat_service.py
 ├── schemas/chat.py
-└── api/chat.py (updated)
+└── api/chat.py（更新）
 ```
 
-**Mock response routing** — the mock service selects responses based on keyword matching:
+**Mock 响应路由** — Mock 服务根据关键词匹配选择响应：
 
-| Input Pattern | Intent | Mock Response |
-|---------------|--------|---------------|
-| Contains "岗位", "工作", "实习" | job_search | Returns 3 sample job recommendations |
-| Contains "公司", "字节", "腾讯" | company_info | Returns a sample company card |
-| Contains "简历", "简历分析" | resume_help | Returns resume tips |
-| Contains "薪资", "工资", "钱" | salary | Returns salary range data |
-| Default | general | Returns a helpful general response |
+| 输入关键词 | 识别意图 | Mock 响应内容 |
+|-----------|---------|--------------|
+| 包含"岗位"、"工作"、"实习" | job_search | 返回 3 条示例岗位推荐 |
+| 包含"公司"、"字节"、"腾讯" | company_info | 返回一个示例公司卡片 |
+| 包含"简历"、"简历分析" | resume_help | 返回简历优化建议 |
+| 包含"薪资"、"工资"、"钱" | salary | 返回薪资区间数据 |
+| 其他 | general | 返回通用帮助信息 |
 
-**Three mock scenarios** (each intent has all three):
+**三种 Mock 场景**（每个意图都包含全部三种）：
 
 ```json
 {
@@ -364,31 +364,31 @@ ai-service/app/
 }
 ```
 
-Error and empty scenarios trigger randomly with 5% and 10% probability respectively in mock mode, configurable via env var `MOCK_ERROR_RATE`.
+错误和空结果场景分别以 5% 和 10% 的概率随机触发，可通过环境变量 `MOCK_ERROR_RATE` 配置。
 
-### 4.6 Frontend Design
+### 4.6 前端设计
 
-**New files:**
+**新增文件：**
 
 ```
 frontend/src/
-├── app/chat/page.tsx                 ← main chat page
-├── app/chat/layout.tsx               ← chat layout with sidebar
+├── app/chat/page.tsx                 ← 主对话页面
+├── app/chat/layout.tsx               ← 带侧边栏的对话布局
 ├── components/chat/
-│   ├── ChatSidebar.tsx               ← session list
-│   ├── ChatMessageList.tsx           ← message bubbles
-│   ├── ChatInput.tsx                 ← input + send button
-│   ├── ChatMessage.tsx               ← single message bubble
-│   └── TypewriterText.tsx            ← typewriter animation
-└── lib/store/chatStore.ts            ← zustand chat state
+│   ├── ChatSidebar.tsx               ← 会话列表
+│   ├── ChatMessageList.tsx           ← 消息气泡区域
+│   ├── ChatInput.tsx                 ← 输入框 + 发送按钮
+│   ├── ChatMessage.tsx               ← 单条消息气泡
+│   └── TypewriterText.tsx            ← 打字机动画
+└── lib/store/chatStore.ts            ← zustand 对话状态管理
 ```
 
-**Chat UI layout:**
+**对话界面布局：**
 
 ```
 ┌─────────┬──────────────────────────────────┐
-│ Session │                                  │
-│ List    │     Message Area                 │
+│ 会话列表 │                                  │
+│         │     消息区域                      │
 │         │     ┌──────────────────┐         │
 │ • 新对话 │     │ AI: 你好！       │         │
 │ • 昨天  │     │ User: 找后端实习  │         │
@@ -401,36 +401,36 @@ frontend/src/
 └─────────┴──────────────────────────────────┘
 ```
 
-**shadcn/ui components used:** `ScrollArea`, `Avatar`, `Button`, `Input`, `Separator`, `Skeleton`
+**使用到的 shadcn/ui 组件：** `ScrollArea`、`Avatar`、`Button`、`Input`、`Separator`、`Skeleton`
 
-**Typewriter effect:** AI messages animate character-by-character using a `TypewriterText` component. In mock mode, the animation runs on the pre-fetched response. When real LLM streaming is added later, this component will consume SSE chunks instead.
+**打字机效果：** AI 消息通过 `TypewriterText` 组件逐字符动画展示。Mock 模式下动画运行在预获取的响应上。后续接入真实 LLM 流式输出时，该组件将改为消费 SSE 数据块。
 
 ---
 
-## 5. Phase C — Job Exploration Engine
+## 5. 阶段 C — 岗位探索引擎
 
-### 5.1 Scope
+### 5.1 功能范围
 
-- Static JSON seed data covering 20+ majors across 5 categories
-- Major → Job tag mapping browsing
-- Fuzzy keyword search (mock LLM returns curated results)
-- Job detail cards with tag chips
+- 静态 JSON 种子数据，覆盖 5 大类别 20+ 个主流专业
+- 专业 → 岗位标签映射浏览
+- 模糊关键词搜索（Mock LLM 返回精选结果）
+- 岗位详情卡片，带标签展示
 
-### 5.2 Seed Data Design
+### 5.2 种子数据设计
 
-**File:** `ai-service/app/services/mock_data/job_knowledge_graph.json`
+**文件：** `ai-service/app/services/mock_data/job_knowledge_graph.json`
 
-**Coverage (20+ majors):**
+**覆盖范围（20+ 专业）：**
 
-| Category | Majors |
-|----------|--------|
-| 工学 | 计算机科学与技术, 软件工程, 人工智能, 电子信息工程, 通信工程, 自动化 |
-| 理学 | 数学与应用数学, 统计学, 物理学 |
-| 经济学 | 经济学, 金融学, 国际经济与贸易 |
-| 管理学 | 工商管理, 市场营销, 会计学, 人力资源管理, 信息管理与信息系统 |
-| 文学 | 英语, 新闻学, 广告学 |
+| 类别 | 专业 |
+|------|------|
+| 工学 | 计算机科学与技术、软件工程、人工智能、电子信息工程、通信工程、自动化 |
+| 理学 | 数学与应用数学、统计学、物理学 |
+| 经济学 | 经济学、金融学、国际经济与贸易 |
+| 管理学 | 工商管理、市场营销、会计学、人力资源管理、信息管理与信息系统 |
+| 文学 | 英语、新闻学、广告学 |
 
-Each major entry follows the schema from the planning doc Appendix:
+每个专业条目遵循规划文档附录中的 Schema：
 
 ```json
 {
@@ -456,9 +456,9 @@ Each major entry follows the schema from the planning doc Appendix:
 }
 ```
 
-### 5.3 Backend Design
+### 5.3 后端设计
 
-**New files:**
+**新增文件：**
 
 ```
 backend/src/main/java/com/jobpilot/
@@ -470,20 +470,20 @@ backend/src/main/java/com/jobpilot/
 └── dto/JobSearchRequest.java
 ```
 
-**API Endpoints:**
+**API 端点：**
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/jobs/categories` | List all categories (工学, 理学, ...) |
-| GET | `/jobs/categories/{category}/majors` | List majors in a category |
-| GET | `/jobs/majors/{major}` | Get full job mapping for a major |
-| GET | `/jobs/search?q=xxx` | Fuzzy search → mock LLM returns ranked results |
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| GET | `/jobs/categories` | 获取所有类别列表（工学、理学、…） |
+| GET | `/jobs/categories/{category}/majors` | 获取指定类别下的专业列表 |
+| GET | `/jobs/majors/{major}` | 获取指定专业的完整岗位映射 |
+| GET | `/jobs/search?q=xxx` | 模糊搜索 → Mock LLM 返回排序结果 |
 
-**Backend acts as a proxy** — it forwards category/major queries to the AI service, which returns data from the static JSON seed. This keeps the AI service as the single source of truth for knowledge graph data, making it easy to swap static JSON for real RAG later.
+**后端作为代理** — 将类别/专业查询转发给 AI 服务，由 AI 服务从静态 JSON 种子数据中返回。这样 AI 服务成为知识图谱数据的唯一数据源，后续替换为真实 RAG 时无需修改后端。
 
-### 5.4 AI Service Design
+### 5.4 AI 服务设计
 
-**New files:**
+**新增文件：**
 
 ```
 ai-service/app/
@@ -492,81 +492,81 @@ ai-service/app/
 └── schemas/job.py
 ```
 
-**Endpoints:**
+**端点：**
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/jobs/categories` | Returns category list from JSON |
-| GET | `/jobs/majors/{major}` | Returns major detail from JSON |
-| GET | `/jobs/search?q=xxx` | Mock fuzzy search: keyword matching + random ranking |
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| GET | `/jobs/categories` | 从 JSON 返回类别列表 |
+| GET | `/jobs/majors/{major}` | 从 JSON 返回专业详情 |
+| GET | `/jobs/search?q=xxx` | Mock 模糊搜索：关键词匹配 + 随机排序 |
 
-**Fuzzy search mock logic:**
-1. Receive query string
-2. Search across all majors' `job_title`, `tags`, `description` fields
-3. Return top 5 matches with mock confidence scores
-4. Empty query → return empty result (tests the empty scenario)
+**模糊搜索 Mock 逻辑：**
+1. 接收查询字符串
+2. 在所有专业的 `job_title`、`tags`、`description` 字段中搜索
+3. 返回前 5 条匹配结果，附带 Mock 置信度分数
+4. 空查询 → 返回空结果（测试空结果场景）
 
-### 5.5 Frontend Design
+### 5.5 前端设计
 
-**New files:**
+**新增文件：**
 
 ```
 frontend/src/
-├── app/explore/page.tsx              ← main exploration page
-├── app/explore/[category]/page.tsx   ← category detail
-├── app/explore/major/[name]/page.tsx ← major → job cards
+├── app/explore/page.tsx              ← 探索主页
+├── app/explore/[category]/page.tsx   ← 类别详情页
+├── app/explore/major/[name]/page.tsx ← 专业 → 岗位卡片
 ├── components/explore/
-│   ├── CategoryGrid.tsx              ← category cards grid
-│   ├── MajorCard.tsx                 ← major card with primary jobs
-│   ├── JobTagCard.tsx                ← single job tag card
-│   ├── JobDetailPanel.tsx            ← expanded job detail
-│   └── SearchBar.tsx                 ← fuzzy search input
+│   ├── CategoryGrid.tsx              ← 类别卡片网格
+│   ├── MajorCard.tsx                 ← 专业卡片（含主推岗位）
+│   ├── JobTagCard.tsx                ← 单个岗位标签卡片
+│   ├── JobDetailPanel.tsx            ← 岗位详情展开面板
+│   └── SearchBar.tsx                 ← 模糊搜索输入框
 ```
 
-**Page flow:**
+**页面流转：**
 
 ```
 /explore
-  → CategoryGrid: shows 5 category cards (工学/理学/经济/管理/文学)
-  → Click category → /explore/{category}
-    → MajorCard list: shows majors in that category
-    → Click major → /explore/major/{name}
-      → JobTagCard grid: primary jobs + extended jobs
-      → Click a job → JobDetailPanel slides in (tags, companies, salary, description)
+  → CategoryGrid：展示 5 个类别卡片（工学/理学/经济/管理/文学）
+  → 点击类别 → /explore/{category}
+    → MajorCard 列表：展示该类别下的专业
+    → 点击专业 → /explore/major/{name}
+      → JobTagCard 网格：主推岗位 + 延伸岗位
+      → 点击岗位 → JobDetailPanel 滑入（标签、公司、薪资、描述）
 ```
 
-**Search bar** is sticky at top of `/explore` page. Typing triggers debounced search (300ms) → results appear in a dropdown overlay.
+**搜索栏** 固定在 `/explore` 页面顶部。输入时触发防抖搜索（300ms），结果以下拉覆盖层形式展示。
 
-**shadcn/ui components used:** `Card`, `Badge` (for tags), `Dialog` (for job detail), `Command` (for search), `Tabs` (primary/extended jobs), `Skeleton`
+**使用到的 shadcn/ui 组件：** `Card`、`Badge`（标签）、`Dialog`（岗位详情）、`Command`（搜索）、`Tabs`（主推/延伸岗位）、`Skeleton`
 
 ---
 
-## 6. Phase D — Company Intelligence Module
+## 6. 阶段 D — 公司情报模块
 
-### 6.1 Scope
+### 6.1 功能范围
 
-- Company search with autocomplete
-- Company intelligence card (basic info, JD, timeline, salary, reviews)
-- Cache strategy: Redis (hot) + MySQL (warm) + AI service (cold/mock)
-- Mock web search returns curated company data
+- 公司搜索，带自动补全
+- 公司情报卡片（基础信息、JD、发展时间线、薪资、评价）
+- 缓存策略：Redis（热数据）+ MySQL（温数据）+ AI 服务（冷数据/Mock）
+- Mock 联网搜索返回精选公司数据
 
-### 6.2 Company Cache Strategy
+### 6.2 公司情报缓存策略
 
 ```
-Request: "字节跳动"
-  → Backend checks Redis: key `company:intel:{company_name}`
-    → HIT: return cached data (TTL 24h)
-    → MISS: check MySQL company_cache table
-      → HIT & not expired: return data, warm Redis
-      → MISS or expired: call AI service
-        → AI service returns mock company intel
-        → Backend writes to MySQL + Redis
-        → Return to frontend
+请求："字节跳动"
+  → 后端检查 Redis：键 `company:intel:{company_name}`
+    → 命中：返回缓存数据（TTL 24 小时）
+    → 未命中：检查 MySQL company_cache 表
+      → 命中且未过期：返回数据，预热 Redis
+      → 未命中或已过期：调用 AI 服务
+        → AI 服务返回 Mock 公司情报
+        → 后端写入 MySQL + Redis
+        → 返回给前端
 ```
 
-### 6.3 Backend Design
+### 6.3 后端设计
 
-**New files:**
+**新增文件：**
 
 ```
 backend/src/main/java/com/jobpilot/
@@ -578,15 +578,15 @@ backend/src/main/java/com/jobpilot/
 └── dto/CompanyIntelDto.java
 ```
 
-**API Endpoints:**
+**API 端点：**
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/companies/search?q=xxx` | Autocomplete company names |
-| GET | `/companies/{name}` | Get full company intelligence |
-| POST | `/companies/{name}/refresh` | Force refresh cache |
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| GET | `/companies/search?q=xxx` | 公司名称自动补全 |
+| GET | `/companies/{name}` | 获取完整公司情报 |
+| POST | `/companies/{name}/refresh` | 强制刷新缓存 |
 
-**CompanyCacheEntity** maps to existing `company_cache` table:
+**CompanyCacheEntity** 映射已有的 `company_cache` 表：
 ```java
 @Entity
 @Table(name = "company_cache")
@@ -609,9 +609,9 @@ public class CompanyCacheEntity {
 }
 ```
 
-### 6.4 AI Service Design (Mock)
+### 6.4 AI 服务设计（Mock）
 
-**New files:**
+**新增文件：**
 
 ```
 ai-service/app/
@@ -620,38 +620,38 @@ ai-service/app/
 └── schemas/company.py
 ```
 
-**Mock data** covers 10 popular tech companies:
+**Mock 数据** 覆盖 10 家知名科技公司：
 
-| Company | Data Included |
-|---------|--------------|
-| 字节跳动, 腾讯, 阿里巴巴, 美团, 百度 | Basic info, salary, reviews, timeline |
-| 华为, 小米, 京东, 网易, 快手 | Basic info, salary, reviews, timeline |
+| 公司 | 包含数据 |
+|------|---------|
+| 字节跳动、腾讯、阿里巴巴、美团、百度 | 基础信息、薪资、评价、时间线 |
+| 华为、小米、京东、网易、快手 | 基础信息、薪资、评价、时间线 |
 
-Each company entry follows the `CompanyIntel` interface from `frontend/src/types/index.ts`.
+每个公司条目遵循 `frontend/src/types/index.ts` 中定义的 `CompanyIntel` 接口。
 
-**Three mock scenarios:**
-- Normal: full company intel returned
-- Empty: company name not in mock dataset → "未找到该公司信息"
-- Error: random 5% chance of simulated timeout
+**三种 Mock 场景：**
+- 正常：返回完整公司情报
+- 空结果：公司名不在 Mock 数据集中 → "未找到该公司信息"
+- 错误：随机 5% 概率模拟超时
 
-### 6.5 Frontend Design
+### 6.5 前端设计
 
-**New files:**
+**新增文件：**
 
 ```
 frontend/src/
-├── app/company/page.tsx              ← search + results
-├── app/company/[name]/page.tsx       ← company detail page
+├── app/company/page.tsx              ← 搜索 + 结果页
+├── app/company/[name]/page.tsx       ← 公司详情页
 ├── components/company/
-│   ├── CompanySearch.tsx             ← search with autocomplete
-│   ├── CompanyCard.tsx               ← summary card in search results
-│   ├── CompanyDetailCard.tsx         ← full intelligence card
-│   ├── CompanyTimeline.tsx           ← timeline visualization
-│   ├── SalaryChart.tsx               ← ECharts bar chart
-│   └── ReviewRadar.tsx               ← ECharts radar chart
+│   ├── CompanySearch.tsx             ← 带自动补全的搜索框
+│   ├── CompanyCard.tsx               ← 搜索结果中的摘要卡片
+│   ├── CompanyDetailCard.tsx         ← 完整情报卡片
+│   ├── CompanyTimeline.tsx           ← 时间线可视化
+│   ├── SalaryChart.tsx               ← ECharts 柱状图
+│   └── ReviewRadar.tsx               ← ECharts 雷达图
 ```
 
-**Company detail page layout:**
+**公司详情页布局：**
 
 ```
 ┌────────────────────────────────────────────┐
@@ -659,7 +659,7 @@ frontend/src/
 ├────────────────────────────────────────────┤
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐ │
 │  │ 基础信息  │  │ 薪资分布  │  │ 评价雷达  │ │
-│  │ Card     │  │ ECharts  │  │ ECharts  │ │
+│  │ 卡片     │  │ ECharts  │  │ ECharts  │ │
 │  └──────────┘  └──────────┘  └──────────┘ │
 │                                            │
 │  发展时间线 ────────────────────────────    │
@@ -671,62 +671,62 @@ frontend/src/
 └────────────────────────────────────────────┘
 ```
 
-**shadcn/ui components used:** `Command` (search), `Card`, `Badge`, `Tabs` (info/salary/reviews)
-**ECharts:** `SalaryChart` (bar), `ReviewRadar` (radar) — using `echarts-for-react`
+**使用到的 shadcn/ui 组件：** `Command`（搜索）、`Card`、`Badge`、`Tabs`（基础信息/薪资/评价）
+**ECharts 图表：** `SalaryChart`（柱状图）、`ReviewRadar`（雷达图）— 使用 `echarts-for-react`
 
 ---
 
-## 7. Phase E — Resume Upload & Analysis
+## 7. 阶段 E — 简历上传与分析
 
-### 7.1 Scope
+### 7.1 功能范围
 
-- Resume upload (PDF, DOCX) with local file storage
-- LLM parse → structured resume JSON (mock)
-- Resume vs JD analysis scoring (mock)
-- Resume list with version history
+- 简历上传（PDF、DOCX），本地文件存储
+- LLM 解析 → 结构化简历 JSON（Mock）
+- 简历 vs 岗位 JD 匹配分析评分（Mock）
+- 简历列表，带版本历史
 
-### 7.2 File Storage Design
+### 7.2 文件存储设计
 
-**MVP: local volume, structured by user:**
+**MVP 阶段：本地 Volume，按用户分目录：**
 
 ```
-/uploads/{user_id}/{original_filename}
+/uploads/{user_id}/{原始文件名}
 ```
 
-**Storage interface** (abstraction for future OSS switch):
+**存储接口抽象**（为后续 OSS 切换预留）：
 
 ```python
 # ai-service/app/services/storage_service.py
 class StorageService(ABC):
     @abstractmethod
     async def save(self, user_id: str, filename: str, content: bytes) -> str:
-        """Save file, return access path"""
+        """保存文件，返回访问路径"""
         pass
 
     @abstractmethod
     async def read(self, path: str) -> bytes:
-        """Read file content"""
+        """读取文件内容"""
         pass
 
     @abstractmethod
     async def delete(self, path: str) -> bool:
-        """Delete file"""
+        """删除文件"""
         pass
 
 class LocalStorageService(StorageService):
     BASE_DIR = "/uploads"
-    # Implementation: writes to /uploads/{user_id}/{filename}
+    # 实现：写入 /uploads/{user_id}/{filename}
 
 class OSSStorageService(StorageService):
-    # Stub for Phase 2: delegates to MinIO/阿里云 OSS
+    # 第二版预留：委托给 MinIO/阿里云 OSS
     pass
 ```
 
-Backend also stores the file path in `resumes.raw_file_url` column, so switching storage only requires updating the `StorageService` implementation — no DB migration needed.
+后端同时将文件路径存储在 `resumes.raw_file_url` 字段中，因此切换存储方式只需更新 `StorageService` 实现，无需数据库迁移。
 
-### 7.3 Backend Design
+### 7.3 后端设计
 
-**New files:**
+**新增文件：**
 
 ```
 backend/src/main/java/com/jobpilot/
@@ -740,30 +740,30 @@ backend/src/main/java/com/jobpilot/
 └── dto/ResumeScoreDto.java
 ```
 
-**API Endpoints:**
+**API 端点：**
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/resumes/upload` | Upload resume file (multipart) |
-| GET | `/resumes` | List user's resumes |
-| GET | `/resumes/{id}` | Get parsed resume data |
-| POST | `/resumes/{id}/analyze` | Analyze against target position |
-| GET | `/resumes/{id}/score` | Get latest analysis result |
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| POST | `/resumes/upload` | 上传简历文件（multipart） |
+| GET | `/resumes` | 获取用户简历列表 |
+| GET | `/resumes/{id}` | 获取解析后的简历数据 |
+| POST | `/resumes/{id}/analyze` | 针对目标岗位分析简历 |
+| GET | `/resumes/{id}/score` | 获取最新分析结果 |
 
-**Upload flow:**
+**上传流程：**
 ```
-POST /resumes/upload (multipart: file + optional targetPosition)
-  → Validate file type (PDF/DOCX only, max 10MB)
-  → Forward file to AI service for parsing
-  → AI returns structured resume JSON
-  → Save file to local volume: /uploads/{user_id}/{filename}
-  → Save structured data + file path to MySQL resumes table
-  → Return ResumeDto
+POST /resumes/upload（multipart: 文件 + 可选的目标岗位）
+  → 验证文件类型（仅 PDF/DOCX，最大 10MB）
+  → 将文件转发给 AI 服务进行解析
+  → AI 返回结构化简历 JSON
+  → 将文件保存到本地 volume：/uploads/{user_id}/{文件名}
+  → 将结构化数据 + 文件路径写入 MySQL resumes 表
+  → 返回 ResumeDto
 ```
 
-### 7.4 AI Service Design (Mock)
+### 7.4 AI 服务设计（Mock）
 
-**New files:**
+**新增文件：**
 
 ```
 ai-service/app/
@@ -774,7 +774,7 @@ ai-service/app/
 └── schemas/resume.py
 ```
 
-**Mock parse response** — returns a complete structured resume for any uploaded file:
+**Mock 解析响应** — 对任何上传的文件返回完整的结构化简历：
 
 ```json
 {
@@ -790,7 +790,7 @@ ai-service/app/
 }
 ```
 
-**Mock analysis response** — returns scoring against any target position:
+**Mock 分析响应** — 针对任意目标岗位返回评分：
 
 ```json
 {
@@ -810,31 +810,31 @@ ai-service/app/
 }
 ```
 
-**Three mock scenarios:**
-- Normal: returns full structured resume / score
-- Empty: unsupported file type → "不支持的文件格式，请上传 PDF 或 DOCX"
-- Error: random 5% chance → "简历解析服务暂时不可用"
+**三种 Mock 场景：**
+- 正常：返回完整结构化简历 / 评分
+- 空结果：不支持的文件类型 → "不支持的文件格式，请上传 PDF 或 DOCX"
+- 错误：随机 5% 概率 → "简历解析服务暂时不可用"
 
-### 7.5 Frontend Design
+### 7.5 前端设计
 
-**New files:**
+**新增文件：**
 
 ```
 frontend/src/
-├── app/resume/page.tsx               ← resume list
-├── app/resume/upload/page.tsx        ← upload page
-├── app/resume/[id]/page.tsx          ← resume detail + analysis
+├── app/resume/page.tsx               ← 简历列表页
+├── app/resume/upload/page.tsx        ← 上传页面
+├── app/resume/[id]/page.tsx          ← 简历详情 + 分析页
 ├── components/resume/
-│   ├── ResumeUpload.tsx              ← drag-and-drop upload zone
-│   ├── ResumePreview.tsx             ← structured resume display
-│   ├── ScoreRadar.tsx                ← ECharts radar for scoring
-│   ├── ScoreDimensionCard.tsx        ← single dimension score card
-│   └── SuggestionList.tsx            ← improvement suggestions
+│   ├── ResumeUpload.tsx              ← 拖拽上传区域
+│   ├── ResumePreview.tsx             ← 结构化简历预览
+│   ├── ScoreRadar.tsx                ← ECharts 评分雷达图
+│   ├── ScoreDimensionCard.tsx        ← 单维度评分卡片
+│   └── SuggestionList.tsx            ← 改进建议列表
 ```
 
-**Upload page:** drag-and-drop zone using shadcn/ui `Card` + native HTML drag events. File type validation on client side before upload.
+**上传页面：** 使用 shadcn/ui `Card` + 原生 HTML 拖拽事件实现拖拽上传区域。上传前在客户端进行文件类型验证。
 
-**Analysis page layout:**
+**分析页面布局：**
 
 ```
 ┌────────────────────────────────────────────┐
@@ -843,7 +843,7 @@ frontend/src/
 │  ┌────────────┐  ┌────────────────────┐   │
 │  │ 结构化简历  │  │ 匹配度雷达图       │   │
 │  │ 预览       │  │ 整体: 78%          │   │
-│  │            │  │ (ECharts radar)    │   │
+│  │            │  │ (ECharts 雷达图)   │   │
 │  └────────────┘  └────────────────────┘   │
 │                                            │
 │  维度评分                                   │
@@ -861,42 +861,42 @@ frontend/src/
 └────────────────────────────────────────────┘
 ```
 
-**shadcn/ui components used:** `Card`, `Progress` (dimension scores), `Badge`, `Button`, `Alert` (for suggestions)
+**使用到的 shadcn/ui 组件：** `Card`、`Progress`（维度评分）、`Badge`、`Button`、`Alert`（建议）
 
 ---
 
-## 8. Testing Strategy
+## 8. 测试策略
 
-### 8.1 Backend Tests
+### 8.1 后端测试
 
-Each phase includes:
-- **Unit tests** for service layer (mock repositories)
-- **Integration tests** for controller layer (MockMvc, embedded Redis for Phase B)
+每个阶段包含：
+- **单元测试**：Service 层（Mock 仓储层）
+- **集成测试**：Controller 层（MockMvc，阶段 B 使用内嵌 Redis）
 
-### 8.2 AI Service Tests
+### 8.2 AI 服务测试
 
-- **Unit tests** for mock services (verify all three scenarios: normal, empty, error)
-- **API tests** using pytest + httpx `AsyncClient`
+- **单元测试**：Mock 服务（验证三种场景：正常、空结果、错误）
+- **API 测试**：使用 pytest + httpx `AsyncClient`
 
-### 8.3 Frontend Tests
+### 8.3 前端测试
 
-- **Component tests** for key UI components (not in MVP scope, noted for Phase 2)
+- **组件测试**：关键 UI 组件的测试（不在 MVP 范围内，记录在第二版计划中）
 
-### 8.4 Mock Data Validation
+### 8.4 Mock 数据校验
 
-All mock JSON files are validated against the TypeScript interfaces at build time. AI service mock responses must match the schemas defined in `ai-service/app/schemas/`.
+所有 Mock JSON 文件在构建时通过 TypeScript 接口进行校验。AI 服务的 Mock 响应必须匹配 `ai-service/app/schemas/` 中定义的 Schema。
 
 ---
 
-## 9. Out of Scope for MVP
+## 9. MVP 不包含的内容
 
-The following are explicitly deferred:
-- RabbitMQ async messaging
-- Real LLM API integration (Phase 2)
-- WeChat/Feishu channels
-- Resume beautification / export (Phase 2)
-- Job Tracker kanban (Phase 2)
-- Unit tests for frontend components (Phase 2)
-- E2E tests (Phase 2)
-- RAG / vector search (Phase 2)
-- Dynamic web crawling for company data
+以下功能明确推迟到后续版本：
+- RabbitMQ 异步消息
+- 真实 LLM API 集成（第二版）
+- 微信/飞书渠道接入
+- 简历美化 / 导出（第二版）
+- 求职进度看板（第二版）
+- 前端组件单元测试（第二版）
+- 端到端测试（第二版）
+- RAG / 向量检索（第二版）
+- 动态联网爬取公司数据
