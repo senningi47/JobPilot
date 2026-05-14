@@ -1,0 +1,1052 @@
+[
+  {
+    "name": "字节跳动",
+    "name_en": "ByteDance",
+    "basic_info": {
+      "location": "北京",
+      "founded": "2012",
+      "scale": "100000+人",
+      "funding_stage": "已上市（未公开IPO，但估值超2000亿美元）",
+      "industry": "互联网/短视频/信息流",
+      "website": "https://www.bytedance.com",
+      "apply_url": "https://jobs.bytedance.com"
+    },
+    "salary_data": {
+      "p25": 25,
+      "p50": 35,
+      "p75": 55,
+      "currency": "万元/年",
+      "components": {
+        "base": "70%",
+        "bonus": "15%",
+        "equity": "15%"
+      },
+      "benefits": [
+        "免费三餐",
+        "下午茶",
+        "健身房",
+        "弹性工作制",
+        "补充医疗保险",
+        "租房补贴",
+        "打车报销"
+      ]
+    },
+    "review_summary": {
+      "dimensions": [
+        {
+          "name": "工作强度",
+          "score": 2.0,
+          "summary": "大小周、加班文化明显，部分团队实行996，项目节奏极快"
+        },
+        {
+          "name": "薪资兑现",
+          "score": 4.2,
+          "summary": "薪资在行业第一梯队，年终奖丰厚，期权兑现机制成熟"
+        },
+        {
+          "name": "晋升空间",
+          "score": 3.5,
+          "summary": "扁平化管理、晋升速度快，但竞争激烈，中高层岗位有限"
+        },
+        {
+          "name": "技术成长",
+          "score": 4.0,
+          "summary": "技术栈先进、大规模分布式系统经验丰富，技术挑战多"
+        },
+        {
+          "name": "团队氛围",
+          "score": 3.0,
+          "summary": "同事能力普遍较强，但流动性较高，团队稳定性一般"
+        },
+        {
+          "name": "管理质量",
+          "score": 3.2,
+          "summary": "管理风格结果导向，OKR体系成熟，但部分管理层经验不足"
+        }
+      ],
+      "overall_score": 3.3
+    },
+    "timeline": [
+      {
+        "date": "2012-03",
+        "type": "founding",
+        "title": "公司成立",
+        "description": "张一鸣创立字节跳动，推出内涵段子"
+      },
+      {
+        "date": "2016-09",
+        "type": "product",
+        "title": "抖音上线",
+        "description": "短视频应用抖音正式上线，迅速成为中国最受欢迎的短视频平台"
+      },
+      {
+        "date": "2017-05",
+        "type": "expansion",
+        "title": "国际化起步",
+        "description": "TikTok海外版上线，开启全球化扩张之路"
+      },
+      {
+        "date": "2021-05",
+        "type": "management",
+        "title": "张一鸣卸任CEO",
+        "description": "张一鸣宣布卸任CEO，梁汝波接任"
+      },
+      {
+        "date": "2023-12",
+        "type": "business",
+        "title": "营收超越腾讯",
+        "description": "字节跳动年营收超过1100亿美元，超越腾讯成为中国第一大互联网公司"
+      }
+    ],
+    "recent_news": [
+      "字节跳动2025年持续布局AI大模型，豆包应用月活突破1亿",
+      "TikTok在美国面临禁令风波，公司积极应对法律挑战",
+      "字节跳动内部推行「去肥增瘦」，持续优化组织效率"
+    ]
+  },
+  {
+    "name": "腾讯",
+    "name_en": "Tencent",
+    "basic_info": {
+      "location": "深圳",
+      "founded": "1998",
+      "scale": "100000+人",
+      "funding_stage": "已上市（港交所：0700）",
+      "industry": "互联网/社交/游戏/金融科技",
+      "website": "https://www.tencent.com",
+      "apply_url": "https://careers.tencent.com"
+    },
+    "salary_data": {
+      "p25": 24,
+      "p50": 33,
+      "p75": 50,
+      "currency": "万元/年",
+      "components": {
+        "base": "75%",
+        "bonus": "10%",
+        "equity": "15%"
+      },
+      "benefits": [
+        "免费班车",
+        "食堂补贴",
+        "五险一金（高基数）",
+        "补充商业保险",
+        "年度体检",
+        "购房无息贷款",
+        "节日礼金"
+      ]
+    },
+    "review_summary": {
+      "dimensions": [
+        {
+          "name": "工作强度",
+          "score": 3.0,
+          "summary": "不同事业群差异大，IEG和CSIG加班较多，WXG相对轻松"
+        },
+        {
+          "name": "薪资兑现",
+          "score": 4.0,
+          "summary": "薪资有竞争力，股票授予稳定，年终奖看部门业绩"
+        },
+        {
+          "name": "晋升空间",
+          "score": 3.0,
+          "summary": "职级体系完善但晋升通道偏窄，老员工占位现象存在"
+        },
+        {
+          "name": "技术成长",
+          "score": 3.8,
+          "summary": "技术积累深厚，开源贡献多，大规模系统架构经验丰富"
+        },
+        {
+          "name": "团队氛围",
+          "score": 3.8,
+          "summary": "整体氛围友善，注重用户体验，内部赛马机制带来一定竞争"
+        },
+        {
+          "name": "管理质量",
+          "score": 3.5,
+          "summary": "管理体系成熟，Pony注重产品体验，中层管理水平参差不齐"
+        }
+      ],
+      "overall_score": 3.5
+    },
+    "timeline": [
+      {
+        "date": "1998-11",
+        "type": "founding",
+        "title": "公司成立",
+        "description": "马化腾等人在深圳创立腾讯，推出OICQ"
+      },
+      {
+        "date": "2004-06",
+        "type": "finance",
+        "title": "港交所上市",
+        "description": "腾讯在香港联交所主板上市，股票代码0700"
+      },
+      {
+        "date": "2011-01",
+        "type": "product",
+        "title": "微信上线",
+        "description": "微信正式推出，成为国民级社交应用"
+      },
+      {
+        "date": "2021-07",
+        "type": "regulation",
+        "title": "反垄断监管",
+        "description": "腾讯多起投资并购被要求申报，音乐独家版权被解除"
+      },
+      {
+        "date": "2024-01",
+        "type": "product",
+        "title": "混元大模型发布",
+        "description": "腾讯混元大模型全面开放，接入微信、QQ等核心产品"
+      }
+    ],
+    "recent_news": [
+      "腾讯2025年Q1财报显示游戏业务回暖，海外收入占比持续提升",
+      "微信小程序生态交易额突破6万亿元，商业化能力增强",
+      "腾讯持续投入AI基础设施建设，算力中心扩容至多个城市"
+    ]
+  },
+  {
+    "name": "阿里巴巴",
+    "name_en": "Alibaba",
+    "basic_info": {
+      "location": "杭州",
+      "founded": "1999",
+      "scale": "200000+人",
+      "funding_stage": "已上市（NYSE：BABA / 港交所：9988）",
+      "industry": "电子商务/云计算/金融科技",
+      "website": "https://www.alibabagroup.com",
+      "apply_url": "https://talent.alibaba.com"
+    },
+    "salary_data": {
+      "p25": 23,
+      "p50": 32,
+      "p75": 48,
+      "currency": "万元/年",
+      "components": {
+        "base": "70%",
+        "bonus": "10%",
+        "equity": "20%"
+      },
+      "benefits": [
+        "免费三餐",
+        "班车服务",
+        "补充医疗保险",
+        "年度体检",
+        "购房无息贷款",
+        "股权激励",
+        "子女教育补贴"
+      ]
+    },
+    "review_summary": {
+      "dimensions": [
+        {
+          "name": "工作强度",
+          "score": 2.5,
+          "summary": "996文化曾经普遍，近期有所收敛，但项目冲刺期仍需高强度加班"
+        },
+        {
+          "name": "薪资兑现",
+          "score": 3.5,
+          "summary": "基本薪资有竞争力，但近年来股票价值缩水，实际收入受影响"
+        },
+        {
+          "name": "晋升空间",
+          "score": 3.0,
+          "summary": "P序列体系完善，但P7以上晋升难度大，组织变动频繁"
+        },
+        {
+          "name": "技术成长",
+          "score": 4.2,
+          "summary": "技术体系成熟，双十一等场景提供极致技术挑战，开源贡献多"
+        },
+        {
+          "name": "团队氛围",
+          "score": 2.8,
+          "summary": "内卷文化明显，汇报文化较重，跨部门协作存在壁垒"
+        },
+        {
+          "name": "管理质量",
+          "score": 2.8,
+          "summary": "组织架构频繁调整，管理层变动大，战略方向多次切换"
+        }
+      ],
+      "overall_score": 3.1
+    },
+    "timeline": [
+      {
+        "date": "1999-04",
+        "type": "founding",
+        "title": "公司成立",
+        "description": "马云在杭州湖畔花园创立阿里巴巴"
+      },
+      {
+        "date": "2014-09",
+        "type": "finance",
+        "title": "纽交所上市",
+        "description": "阿里巴巴在纽约证券交易所上市，创当时全球最大IPO记录"
+      },
+      {
+        "date": "2019-11",
+        "type": "finance",
+        "title": "港交所上市",
+        "description": "阿里巴巴在香港联交所二次上市"
+      },
+      {
+        "date": "2023-03",
+        "type": "restructure",
+        "title": "1+6+N拆分",
+        "description": "阿里巴巴宣布「1+6+N」组织变革，拆分为六大业务集团"
+      },
+      {
+        "date": "2024-11",
+        "type": "restructure",
+        "title": "战略收缩与整合",
+        "description": "阿里云与钉钉整合，电商事业群合并，回归核心业务"
+      }
+    ],
+    "recent_news": [
+      "阿里云2025年AI相关收入同比增长超过100%，通义千问模型全面开源",
+      "淘宝天猫持续推进低价策略与内容化电商，争夺下沉市场份额",
+      "阿里巴巴国际业务增长强劲，速卖通和Lazada东南亚业务持续扩张"
+    ]
+  },
+  {
+    "name": "美团",
+    "name_en": "Meituan",
+    "basic_info": {
+      "location": "北京",
+      "founded": "2010",
+      "scale": "80000+人",
+      "funding_stage": "已上市（港交所：3690）",
+      "industry": "本地生活/外卖/到店服务",
+      "website": "https://www.meituan.com",
+      "apply_url": "https://zhaopin.meituan.com"
+    },
+    "salary_data": {
+      "p25": 22,
+      "p50": 30,
+      "p75": 45,
+      "currency": "万元/年",
+      "components": {
+        "base": "80%",
+        "bonus": "10%",
+        "equity": "10%"
+      },
+      "benefits": [
+        "餐补",
+        "免费班车",
+        "补充医疗保险",
+        "年度体检",
+        "打车报销（加班）",
+        "弹性工作制",
+        "节日礼品"
+      ]
+    },
+    "review_summary": {
+      "dimensions": [
+        {
+          "name": "工作强度",
+          "score": 2.2,
+          "summary": "高强度加班普遍，部分团队实行大小周，业务节奏快"
+        },
+        {
+          "name": "薪资兑现",
+          "score": 3.5,
+          "summary": "薪资中上水平，年终奖与绩效强挂钩，股票授予稳定"
+        },
+        {
+          "name": "晋升空间",
+          "score": 3.3,
+          "summary": "晋升体系清晰，L序列透明，但高层岗位竞争激烈"
+        },
+        {
+          "name": "技术成长",
+          "score": 3.5,
+          "summary": "技术栈成熟，大规模实时配送调度系统有技术深度"
+        },
+        {
+          "name": "团队氛围",
+          "score": 3.0,
+          "summary": "王兴推崇高效执行文化，团队狼性强，内部竞争较激烈"
+        },
+        {
+          "name": "管理质量",
+          "score": 3.3,
+          "summary": "管理体系逐步完善，数据驱动决策，但组织层级较多"
+        }
+      ],
+      "overall_score": 3.1
+    },
+    "timeline": [
+      {
+        "date": "2010-03",
+        "type": "founding",
+        "title": "公司成立",
+        "description": "王兴创立美团，从团购业务起步"
+      },
+      {
+        "date": "2015-10",
+        "type": "merger",
+        "title": "美团与大众点评合并",
+        "description": "美团与大众点评宣布合并，成立新美大"
+      },
+      {
+        "date": "2018-09",
+        "type": "finance",
+        "title": "港交所上市",
+        "description": "美团在香港联交所上市，成为港股同股不同权第一股之一"
+      },
+      {
+        "date": "2021-09",
+        "type": "regulation",
+        "title": "反垄断处罚",
+        "description": "美团因「二选一」垄断行为被罚款34.42亿元"
+      },
+      {
+        "date": "2024-02",
+        "type": "business",
+        "title": "组织架构调整",
+        "description": "美团合并到店和到家事业群，整合核心本地商业板块"
+      }
+    ],
+    "recent_news": [
+      "美团2025年全面发力AI，推出美团AI助手优化搜索和推荐体验",
+      "美团无人机配送在深圳等城市实现常态化运营，配送订单量突破新高",
+      "美团外卖市场份额稳固，但面临抖音本地生活和饿了么的竞争压力"
+    ]
+  },
+  {
+    "name": "百度",
+    "name_en": "Baidu",
+    "basic_info": {
+      "location": "北京",
+      "founded": "2000",
+      "scale": "40000+人",
+      "funding_stage": "已上市（NASDAQ：BIDU / 港交所：9888）",
+      "industry": "搜索引擎/AI/自动驾驶",
+      "website": "https://www.baidu.com",
+      "apply_url": "https://talent.baidu.com"
+    },
+    "salary_data": {
+      "p25": 20,
+      "p50": 28,
+      "p75": 42,
+      "currency": "万元/年",
+      "components": {
+        "base": "80%",
+        "bonus": "10%",
+        "equity": "10%"
+      },
+      "benefits": [
+        "免费三餐",
+        "班车服务",
+        "补充医疗保险",
+        "年度体检",
+        "健身房",
+        "弹性工作制",
+        "节日礼金"
+      ]
+    },
+    "review_summary": {
+      "dimensions": [
+        {
+          "name": "工作强度",
+          "score": 3.0,
+          "summary": "整体加班强度中等，核心AI部门较忙，部分支持部门节奏适中"
+        },
+        {
+          "name": "薪资兑现",
+          "score": 3.0,
+          "summary": "薪资在大厂中偏中下，股票长期低迷，实际收入缩水"
+        },
+        {
+        "name": "晋升空间",
+          "score": 3.0,
+          "summary": "T序列技术晋升通道完善，但管理岗位有限，发展天花板较低"
+        },
+        {
+          "name": "技术成长",
+          "score": 4.0,
+          "summary": "AI技术积累深厚，自动驾驶和大模型领域技术领先，适合技术深耕"
+        },
+        {
+          "name": "团队氛围",
+          "score": 3.2,
+          "summary": "工程师文化较强，同事间技术交流多，但公司整体士气受业务影响"
+        },
+        {
+          "name": "管理质量",
+          "score": 2.8,
+          "summary": "管理层频繁变动，战略方向摇摆，执行力有待提升"
+        }
+      ],
+      "overall_score": 3.2
+    },
+    "timeline": [
+      {
+        "date": "2000-01",
+        "type": "founding",
+        "title": "公司成立",
+        "description": "李彦宏在中关村创立百度，专注中文搜索引擎"
+      },
+      {
+        "date": "2005-08",
+        "type": "finance",
+        "title": "纳斯达克上市",
+        "description": "百度在纳斯达克上市，首日涨幅354%，创中概股纪录"
+      },
+      {
+        "date": "2017-07",
+        "type": "product",
+        "title": "Apollo自动驾驶平台",
+        "description": "百度发布Apollo自动驾驶开放平台，推动自动驾驶产业化"
+      },
+      {
+        "date": "2023-03",
+        "type": "product",
+        "title": "文心一言发布",
+        "description": "百度推出大语言模型文心一言，成为中国首个公开发布的AI大模型"
+      },
+      {
+        "date": "2024-04",
+        "type": "business",
+        "title": "AI商业化提速",
+        "description": "文心一言用户突破2亿，AI云收入成为百度增长新引擎"
+      }
+    ],
+    "recent_news": [
+      "百度文心大模型4.5版本发布，多项基准测试成绩接近GPT-4水平",
+      "萝卜快跑自动驾驶出租车在武汉运营规模持续扩大，日订单量创新高",
+      "百度搜索全面接入AI功能，搜索体验向对话式交互转型"
+    ]
+  },
+  {
+    "name": "华为",
+    "name_en": "Huawei",
+    "basic_info": {
+      "location": "深圳",
+      "founded": "1987",
+      "scale": "200000+人",
+      "funding_stage": "未上市（员工持股制）",
+      "industry": "通信设备/消费电子/云计算/AI",
+      "website": "https://www.huawei.com",
+      "apply_url": "https://career.huawei.com"
+    },
+    "salary_data": {
+      "p25": 22,
+      "p50": 35,
+      "p75": 55,
+      "currency": "万元/年",
+      "components": {
+        "base": "50%",
+        "bonus": "20%",
+        "equity": "30%"
+      },
+      "benefits": [
+        "员工食堂",
+        "班车服务",
+        "补充医疗保险",
+        "年度体检",
+        "员工持股分红",
+        "海外出差补贴",
+        "内部购房优惠"
+      ]
+    },
+    "review_summary": {
+      "dimensions": [
+        {
+          "name": "工作强度",
+          "score": 1.8,
+          "summary": "加班文化根深蒂固，部分部门实行996甚至更高强度，奋斗者协议引发争议"
+        },
+        {
+          "name": "薪资兑现",
+          "score": 4.3,
+          "summary": "薪资极具竞争力，员工持股分红丰厚，优秀员工收入远超同行"
+        },
+        {
+          "name": "晋升空间",
+          "score": 3.8,
+          "summary": "职级体系明确，晋升机会多，海外派驻可加速职业发展"
+        },
+        {
+          "name": "技术成长",
+          "score": 4.5,
+          "summary": "技术实力全球领先，芯片、5G、鸿蒙等领域自主研发能力强"
+        },
+        {
+          "name": "团队氛围",
+          "score": 3.0,
+          "summary": "狼性文化明显，执行力强，但竞争压力大，人际关系相对复杂"
+        },
+        {
+          "name": "管理质量",
+          "score": 3.5,
+          "summary": "管理体系成熟，轮值CEO制度运行稳定，流程化管理高效"
+        }
+      ],
+      "overall_score": 3.5
+    },
+    "timeline": [
+      {
+        "date": "1987-09",
+        "type": "founding",
+        "title": "公司成立",
+        "description": "任正非在深圳创立华为，最初代理销售程控交换机"
+      },
+      {
+        "date": "2019-05",
+        "type": "crisis",
+        "title": "美国实体清单",
+        "description": "华为被列入美国实体清单，面临芯片断供等技术封锁"
+      },
+      {
+        "date": "2021-06",
+        "type": "product",
+        "title": "HarmonyOS 2发布",
+        "description": "鸿蒙操作系统2.0正式发布，构建全场景分布式操作系统"
+      },
+      {
+        "date": "2023-08",
+        "type": "product",
+        "title": "Mate 60 Pro发布",
+        "description": "华为Mate 60 Pro搭载麒麟9000S芯片回归，标志突破芯片封锁"
+      },
+      {
+        "date": "2024-10",
+        "type": "product",
+        "title": "HarmonyOS NEXT发布",
+        "description": "纯血鸿蒙HarmonyOS NEXT正式发布，完全脱离安卓内核"
+      }
+    ],
+    "recent_news": [
+      "华为2025年鸿蒙生态设备数量突破10亿，原生应用生态加速完善",
+      "华为昇腾AI芯片在国内市场份额持续提升，成为国产替代首选方案",
+      "华为智能汽车解决方案业务增长强劲，问界系列车型销量屡创新高"
+    ]
+  },
+  {
+    "name": "小米",
+    "name_en": "Xiaomi",
+    "basic_info": {
+      "location": "北京",
+      "founded": "2010",
+      "scale": "35000+人",
+      "funding_stage": "已上市（港交所：1810）",
+      "industry": "消费电子/IoT/智能硬件",
+      "website": "https://www.mi.com",
+      "apply_url": "https://hr.xiaomi.com"
+    },
+    "salary_data": {
+      "p25": 18,
+      "p50": 26,
+      "p75": 40,
+      "currency": "万元/年",
+      "components": {
+        "base": "80%",
+        "bonus": "10%",
+        "equity": "10%"
+      },
+      "benefits": [
+        "餐补",
+        "班车服务",
+        "补充医疗保险",
+        "年度体检",
+        "员工内购折扣",
+        "弹性工作制",
+        "节日礼品"
+      ]
+    },
+    "review_summary": {
+      "dimensions": [
+        {
+          "name": "工作强度",
+          "score": 2.5,
+          "summary": "加班强度中等偏上，产品发布期冲刺加班多，日常节奏较快"
+        },
+        {
+          "name": "薪资兑现",
+          "score": 3.2,
+          "summary": "薪资在大厂中偏低，但性价比尚可，股票期权有上升空间"
+        },
+        {
+          "name": "晋升空间",
+          "score": 3.5,
+          "summary": "公司快速发展期晋升机会多，造车等新业务带来新的职业赛道"
+        },
+        {
+          "name": "技术成长",
+          "score": 3.5,
+          "summary": "IoT和智能硬件领域技术积累深，造车业务带来全新技术挑战"
+        },
+        {
+          "name": "团队氛围",
+          "score": 3.8,
+          "summary": "工程师文化浓厚，扁平化管理，雷军亲和力强，团队年轻有活力"
+        },
+        {
+          "name": "管理质量",
+          "score": 3.3,
+          "summary": "管理层务实高效，但组织扩张快，部分流程还在完善中"
+        }
+      ],
+      "overall_score": 3.3
+    },
+    "timeline": [
+      {
+        "date": "2010-04",
+        "type": "founding",
+        "title": "公司成立",
+        "description": "雷军创立小米，以互联网模式做手机"
+      },
+      {
+        "date": "2018-07",
+        "type": "finance",
+        "title": "港交所上市",
+        "description": "小米在香港联交所上市，成为港股首家同股不同权上市公司"
+      },
+      {
+        "date": "2021-03",
+        "type": "strategy",
+        "title": "官宣造车",
+        "description": "雷军宣布小米正式进军智能电动汽车行业，押上人生最后一次创业"
+      },
+      {
+        "date": "2024-03",
+        "type": "product",
+        "title": "小米SU7上市",
+        "description": "小米SU7正式上市，首月订单突破10万，成为现象级产品"
+      },
+      {
+        "date": "2025-02",
+        "type": "product",
+        "title": "小米SU7 Ultra发布",
+        "description": "小米SU7 Ultra发布，刷新纽北最快四门车纪录"
+      }
+    ],
+    "recent_news": [
+      "小米汽车2025年交付量目标30万台，产能持续爬坡",
+      "小米HyperOS 2.0全面推送，AI功能深度整合手机、汽车和IoT设备",
+      "小米2025年Q1营收同比增长超过30%，汽车业务首次实现单季盈利"
+    ]
+  },
+  {
+    "name": "京东",
+    "name_en": "JD.com",
+    "basic_info": {
+      "location": "北京",
+      "founded": "1998",
+      "scale": "500000+人（含物流）",
+      "funding_stage": "已上市（NASDAQ：JD / 港交所：9618）",
+      "industry": "电子商务/物流/金融科技",
+      "website": "https://www.jd.com",
+      "apply_url": "https://zhaopin.jd.com"
+    },
+    "salary_data": {
+      "p25": 19,
+      "p50": 27,
+      "p75": 40,
+      "currency": "万元/年",
+      "components": {
+        "base": "85%",
+        "bonus": "10%",
+        "equity": "5%"
+      },
+      "benefits": [
+        "免费班车",
+        "员工食堂",
+        "补充医疗保险",
+        "年度体检",
+        "员工折扣",
+        "节日礼品",
+        "京东E卡"
+      ]
+    },
+    "review_summary": {
+      "dimensions": [
+        {
+          "name": "工作强度",
+          "score": 2.5,
+          "summary": "618和双11期间高强度加班，技术岗整体加班强度中等"
+        },
+        {
+          "name": "薪资兑现",
+          "score": 3.2,
+          "summary": "基本薪资有保障，但整体水平在大厂中偏低，年终奖波动较大"
+        },
+        {
+          "name": "晋升空间",
+          "score": 2.8,
+          "summary": "晋升体系完善但通道拥挤，管理岗比例较低，老员工占位多"
+        },
+        {
+          "name": "技术成长",
+          "score": 3.3,
+          "summary": "物流和供应链系统技术积累深，但互联网前沿技术探索相对保守"
+        },
+        {
+          "name": "团队氛围",
+          "score": 3.0,
+          "summary": "团队执行文化强，刘强东管理风格直接，内部竞争氛围较重"
+        },
+        {
+          "name": "管理质量",
+          "score": 2.8,
+          "summary": "高层管理风格强势，中层执行力参差不齐，组织变动频繁"
+        }
+      ],
+      "overall_score": 2.9
+    },
+    "timeline": [
+      {
+        "date": "1998-06",
+        "type": "founding",
+        "title": "公司成立",
+        "description": "刘强东在北京中关村创办京东多媒体"
+      },
+      {
+        "date": "2007-01",
+        "type": "strategy",
+        "title": "自建物流",
+        "description": "京东决定自建物流体系，打造仓配一体化供应链"
+      },
+      {
+        "date": "2014-05",
+        "type": "finance",
+        "title": "纳斯达克上市",
+        "description": "京东在纳斯达克上市，成为当时中国赴美最大IPO"
+      },
+      {
+        "date": "2023-01",
+        "type": "strategy",
+        "title": "低价战略转型",
+        "description": "京东推出「百亿补贴」频道，全面转向低价策略"
+      },
+      {
+        "date": "2024-05",
+        "type": "product",
+        "title": "京东AI布局",
+        "description": "京东推出言犀大模型，将AI能力融入电商、物流全链路"
+      }
+    ],
+    "recent_news": [
+      "京东2025年持续推进低价策略，百亿补贴覆盖品类进一步扩大",
+      "京东物流2025年Q1营收突破500亿，外部客户收入占比提升至70%",
+      "京东外卖业务正式上线，与美团、饿了么展开即时零售竞争"
+    ]
+  },
+  {
+    "name": "网易",
+    "name_en": "NetEase",
+    "basic_info": {
+      "location": "杭州",
+      "founded": "1997",
+      "scale": "30000+人",
+      "funding_stage": "已上市（NASDAQ：NTES / 港交所：9999）",
+      "industry": "游戏/音乐/教育/电商",
+      "website": "https://www.163.com",
+      "apply_url": "https://hr.163.com"
+    },
+    "salary_data": {
+      "p25": 20,
+      "p50": 28,
+      "p75": 42,
+      "currency": "万元/年",
+      "components": {
+        "base": "80%",
+        "bonus": "15%",
+        "equity": "5%"
+      },
+      "benefits": [
+        "免费三餐",
+        "猪厂食堂（业界知名）",
+        "班车服务",
+        "补充医疗保险",
+        "年度体检",
+        "健身房",
+        "节日礼金"
+      ]
+    },
+    "review_summary": {
+      "dimensions": [
+        {
+          "name": "工作强度",
+          "score": 3.2,
+          "summary": "整体加班强度中等，游戏项目上线期较忙，日常节奏相对平衡"
+        },
+        {
+          "name": "薪资兑现",
+          "score": 3.8,
+          "summary": "薪资水平在大厂中中上，年终奖丰厚，游戏项目组奖金尤其可观"
+        },
+        {
+          "name": "晋升空间",
+          "score": 3.0,
+          "summary": "晋升体系相对稳定，但公司文化偏保守，创新项目资源有限"
+        },
+        {
+          "name": "技术成长",
+          "score": 3.5,
+          "summary": "游戏引擎和实时对战技术积累深，云音乐推荐算法成熟"
+        },
+        {
+          "name": "团队氛围",
+          "score": 3.8,
+          "summary": "企业文化相对温和，丁磊注重产品品质，同事关系融洽"
+        },
+        {
+          "name": "管理质量",
+          "score": 3.5,
+          "summary": "管理风格偏稳健，丁磊深耕产品，公司现金流健康"
+        }
+      ],
+      "overall_score": 3.5
+    },
+    "timeline": [
+      {
+        "date": "1997-06",
+        "type": "founding",
+        "title": "公司成立",
+        "description": "丁磊在广州创立网易，推出163免费邮箱"
+      },
+      {
+        "date": "2000-06",
+        "type": "finance",
+        "title": "纳斯达克上市",
+        "description": "网易在纳斯达克上市，成为中国最早赴美上市的互联网公司之一"
+      },
+      {
+        "date": "2013-04",
+        "type": "product",
+        "title": "网易云音乐上线",
+        "description": "网易云音乐正式上线，以歌单和社区特色迅速崛起"
+      },
+      {
+        "date": "2022-06",
+        "type": "product",
+        "title": "暗黑破坏神不朽上线",
+        "description": "网易与暴雪联合开发的《暗黑破坏神：不朽》全球上线"
+      },
+      {
+        "date": "2024-04",
+        "type": "business",
+        "title": "暴雪合作恢复",
+        "description": "网易与暴雪娱乐重新达成合作，国服游戏陆续回归"
+      }
+    ],
+    "recent_news": [
+      "网易2025年新游戏《燕云十六声》公测，开放世界武侠题材受到玩家好评",
+      "网易云音乐会员数突破2亿，社区化音乐平台模式持续发展",
+      "网易有道AI学习产品矩阵完善，AI词典笔等硬件产品销量增长"
+    ]
+  },
+  {
+    "name": "快手",
+    "name_en": "Kuaishou",
+    "basic_info": {
+      "location": "北京",
+      "founded": "2011",
+      "scale": "30000+人",
+      "funding_stage": "已上市（港交所：1024）",
+      "industry": "短视频/直播/电商",
+      "website": "https://www.kuaishou.com",
+      "apply_url": "https://zhaopin.kuaishou.cn"
+    },
+    "salary_data": {
+      "p25": 20,
+      "p50": 28,
+      "p75": 42,
+      "currency": "万元/年",
+      "components": {
+        "base": "75%",
+        "bonus": "15%",
+        "equity": "10%"
+      },
+      "benefits": [
+        "免费三餐",
+        "下午茶",
+        "健身房",
+        "班车服务",
+        "补充医疗保险",
+        "年度体检",
+        "弹性工作制"
+      ]
+    },
+    "review_summary": {
+      "dimensions": [
+        {
+          "name": "工作强度",
+          "score": 2.3,
+          "summary": "加班文化较重，大小周常见，与抖音的竞争压力传导至员工"
+        },
+        {
+          "name": "薪资兑现",
+          "score": 3.5,
+          "summary": "薪资在行业中上有竞争力，年终奖与绩效挂钩，股票期权有空间"
+        },
+        {
+          "name": "晋升空间",
+          "score": 3.2,
+          "summary": "公司仍在快速发展期，晋升机会较多，但管理层年轻化趋势明显"
+        },
+        {
+          "name": "技术成长",
+          "score": 3.8,
+          "summary": "短视频推荐算法和直播技术领先，大规模实时系统经验丰富"
+        },
+        {
+          "name": "团队氛围",
+          "score": 3.3,
+          "summary": "企业文化偏平等务实，同事间交流直接，但业务压力影响氛围"
+        },
+        {
+          "name": "管理质量",
+          "score": 3.0,
+          "summary": "管理层年轻有冲劲，但组织架构变动频繁，执行力有提升空间"
+        }
+      ],
+      "overall_score": 3.2
+    },
+    "timeline": [
+      {
+        "date": "2011-03",
+        "type": "founding",
+        "title": "GIF快手上线",
+        "description": "程一笑创建GIF快手工具应用"
+      },
+      {
+        "date": "2013-10",
+        "type": "product",
+        "title": "转型短视频社区",
+        "description": "快手从GIF工具转型为短视频社区平台"
+      },
+      {
+        "date": "2021-02",
+        "type": "finance",
+        "title": "港交所上市",
+        "description": "快手在香港联交所上市，上市首日市值超1.3万亿港元"
+      },
+      {
+        "date": "2023-01",
+        "type": "finance",
+        "title": "首次盈利",
+        "description": "快手实现上市后首次全年经调整净利润转正"
+      },
+      {
+        "date": "2024-09",
+        "type": "product",
+        "title": "可灵AI视频生成",
+        "description": "快手推出AI视频生成工具「可灵」，引发行业广泛关注"
+      }
+    ],
+    "recent_news": [
+      "快手可灵AI 2025年全球用户突破5000万，AI视频生成技术领先行业",
+      "快手电商2025年Q1 GMV同比增长超过20%，信任电商模式持续深化",
+      "快手海外业务Kwai在拉美市场持续增长，巴西月活突破1亿"
+    ]
+  }
+]
