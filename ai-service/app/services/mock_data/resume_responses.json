@@ -1,0 +1,81 @@
+{
+  "success": {
+    "status": "success",
+    "data": {
+      "basic_info": {
+        "name": "张三",
+        "phone": "13800138000",
+        "email": "zhangsan@example.com",
+        "education": "本科",
+        "target_position": "后端开发工程师"
+      },
+      "education": [
+        {
+          "school": "浙江大学",
+          "major": "计算机科学与技术",
+          "degree": "本科",
+          "start_date": "2019-09",
+          "end_date": "2023-06",
+          "gpa": "3.7/4.0"
+        }
+      ],
+      "projects": [
+        {
+          "name": "电商平台后端系统",
+          "role": "后端开发负责人",
+          "tech_stack": ["Java", "Spring Boot", "MySQL", "Redis", "RabbitMQ", "Docker"],
+          "description": "主导设计并实现了一个高并发电商平台的后端系统，支持商品浏览、下单、支付、物流追踪等核心功能。",
+          "achievements": [
+            "系统日均处理订单量 5 万+，QPS 峰值达 3000",
+            "引入 Redis 缓存热点商品数据，接口响应时间降低 60%",
+            "设计并实现分布式库存扣减方案，解决超卖问题"
+          ]
+        },
+        {
+          "name": "智能简历解析工具",
+          "role": "全栈开发",
+          "tech_stack": ["Python", "FastAPI", "Vue.js", "Elasticsearch", "Docker"],
+          "description": "开发了一款智能简历解析工具，支持 PDF/Word 简历上传并自动提取结构化信息。",
+          "achievements": [
+            "简历字段识别准确率达到 92%",
+            "支持 5 种简历模板的自动适配解析",
+            "累计服务 1000+ 校招用户完成简历优化"
+          ]
+        }
+      ],
+      "internships": [
+        {
+          "company": "字节跳动",
+          "position": "后端开发实习生",
+          "start_date": "2022-07",
+          "end_date": "2022-12",
+          "description": "参与飞书文档后端服务开发，负责文档版本管理和协同时序优化模块。",
+          "achievements": [
+            "优化文档版本查询接口，P99 延迟从 120ms 降至 35ms",
+            "设计了基于 WebSocket 的实时协同通知机制，支持 50 人同时编辑",
+            "编写单元测试覆盖核心逻辑，测试覆盖率从 65% 提升至 88%"
+          ]
+        }
+      ],
+      "skills": [
+        "Java",
+        "Python",
+        "Spring Boot",
+        "MySQL",
+        "Redis",
+        "Docker",
+        "Git",
+        "Linux"
+      ],
+      "honors": [
+        "ACM 区域赛银牌",
+        "校级优秀学生奖学金"
+      ]
+    }
+  },
+  "error": {
+    "status": "error",
+    "data": null,
+    "message": "简历解析服务暂时不可用，请稍后重试"
+  }
+}
