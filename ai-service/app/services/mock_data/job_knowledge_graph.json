@@ -1,0 +1,650 @@
+[
+  {
+    "major": "计算机科学与技术",
+    "category": "工学",
+    "primary_jobs": [
+      {
+        "job_title": "后端开发工程师",
+        "tags": ["Java", "Spring Boot", "MySQL", "Redis", "微服务"],
+        "typical_companies": ["阿里巴巴", "腾讯", "字节跳动", "美团", "京东"],
+        "salary_range_p50": "20k-35k",
+        "difficulty": "中",
+        "description": "负责后端系统的设计与开发，保障高并发场景下的服务稳定性。"
+      },
+      {
+        "job_title": "前端开发工程师",
+        "tags": ["React", "Vue", "TypeScript", "Webpack", "CSS"],
+        "typical_companies": ["字节跳动", "阿里", "腾讯", "拼多多", "百度"],
+        "salary_range_p50": "18k-30k",
+        "difficulty": "中",
+        "description": "构建用户交互界面，优化页面性能与用户体验。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "数据工程师",
+        "tags": ["Spark", "Flink", "Hadoop", "SQL", "ETL"],
+        "typical_companies": ["阿里云", "腾讯云", "字节跳动", "美团"],
+        "salary_range_p50": "22k-38k",
+        "difficulty": "高",
+        "description": "搭建和维护大数据处理平台，支撑数据仓库与实时计算任务。"
+      },
+      {
+        "job_title": "DevOps工程师",
+        "tags": ["Docker", "Kubernetes", "CI/CD", "Linux", "Terraform"],
+        "typical_companies": ["华为云", "阿里云", "腾讯云", "PingCAP"],
+        "salary_range_p50": "20k-35k",
+        "difficulty": "中",
+        "description": "建设与维护持续集成/持续部署流水线，保障基础设施高可用。"
+      }
+    ]
+  },
+  {
+    "major": "软件工程",
+    "category": "工学",
+    "primary_jobs": [
+      {
+        "job_title": "全栈开发工程师",
+        "tags": ["Node.js", "React", "MongoDB", "Docker", "TypeScript"],
+        "typical_companies": ["字节跳动", "美团", "小红书", "快手"],
+        "salary_range_p50": "20k-35k",
+        "difficulty": "中",
+        "description": "独立完成从前端到后端的模块设计与交付。"
+      },
+      {
+        "job_title": "测试开发工程师",
+        "tags": ["Python", "Selenium", "Jenkins", "自动化测试", "接口测试"],
+        "typical_companies": ["阿里", "腾讯", "华为", "中兴通讯"],
+        "salary_range_p50": "18k-28k",
+        "difficulty": "中",
+        "description": "设计并开发自动化测试框架，保障软件交付质量。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "项目经理",
+        "tags": ["项目管理", "Scrum", "需求分析", "风险管控", "Jira"],
+        "typical_companies": ["华为", "中软国际", "东软集团", "用友"],
+        "salary_range_p50": "20k-32k",
+        "difficulty": "中",
+        "description": "统筹项目进度与资源，协调跨部门沟通，保障交付。"
+      }
+    ]
+  },
+  {
+    "major": "人工智能",
+    "category": "工学",
+    "primary_jobs": [
+      {
+        "job_title": "算法工程师",
+        "tags": ["Python", "PyTorch", "TensorFlow", "NLP", "计算机视觉"],
+        "typical_companies": ["百度", "商汤科技", "旷视科技", "科大讯飞", "字节跳动"],
+        "salary_range_p50": "25k-45k",
+        "difficulty": "高",
+        "description": "研发并优化机器学习/深度学习模型，落地业务场景。"
+      },
+      {
+        "job_title": "机器学习工程师",
+        "tags": ["特征工程", "XGBoost", "模型部署", "MLOps", "SQL"],
+        "typical_companies": ["阿里", "腾讯", "美团", "滴滴"],
+        "salary_range_p50": "25k-40k",
+        "difficulty": "高",
+        "description": "构建线上机器学习系统，支撑推荐、风控等核心业务。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "AI产品经理",
+        "tags": ["需求分析", "数据分析", "用户体验", "AI基础", "原型设计"],
+        "typical_companies": ["百度", "阿里", "字节跳动", "科大讯飞"],
+        "salary_range_p50": "20k-35k",
+        "difficulty": "中",
+        "description": "规划AI产品功能，衔接算法团队与业务需求。"
+      }
+    ]
+  },
+  {
+    "major": "电子信息工程",
+    "category": "工学",
+    "primary_jobs": [
+      {
+        "job_title": "嵌入式软件工程师",
+        "tags": ["C语言", "STM32", "RTOS", "驱动开发", "Linux"],
+        "typical_companies": ["华为", "中兴通讯", "大疆创新", "海康威视"],
+        "salary_range_p50": "15k-25k",
+        "difficulty": "中",
+        "description": "开发嵌入式设备固件与驱动程序，进行硬件联调。"
+      },
+      {
+        "job_title": "硬件工程师",
+        "tags": ["Altium Designer", "PCB设计", "信号完整性", "模电", "数电"],
+        "typical_companies": ["华为", "海康威视", "大疆创新", "中芯国际"],
+        "salary_range_p50": "15k-25k",
+        "difficulty": "中",
+        "description": "完成原理图与PCB设计，支撑硬件产品量产。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "FPGA开发工程师",
+        "tags": ["Verilog", "VHDL", "FPGA", "时序分析", "SoC"],
+        "typical_companies": ["华为海思", "紫光集团", "比特大陆", "寒武纪"],
+        "salary_range_p50": "18k-30k",
+        "difficulty": "高",
+        "description": "基于FPGA平台开发数字逻辑电路，优化硬件加速方案。"
+      }
+    ]
+  },
+  {
+    "major": "通信工程",
+    "category": "工学",
+    "primary_jobs": [
+      {
+        "job_title": "无线通信工程师",
+        "tags": ["4G/5G", "协议栈", "MATLAB", "射频", "信号处理"],
+        "typical_companies": ["华为", "中兴通讯", "大唐电信", "中国移动"],
+        "salary_range_p50": "15k-25k",
+        "difficulty": "中",
+        "description": "参与移动通信系统的协议开发与测试。"
+      },
+      {
+        "job_title": "网络优化工程师",
+        "tags": ["LTE", "5G NR", "网络规划", "路测", "数据分析"],
+        "typical_companies": ["中国移动", "中国电信", "华为", "爱立信"],
+        "salary_range_p50": "12k-20k",
+        "difficulty": "低",
+        "description": "对无线网络进行优化调整，提升网络覆盖与容量。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "通信协议开发工程师",
+        "tags": ["C/C++", "TCP/IP", "3GPP", "Linux", "协议栈"],
+        "typical_companies": ["华为", "中兴通讯", "高通", "诺基亚"],
+        "salary_range_p50": "18k-30k",
+        "difficulty": "高",
+        "description": "开发与维护通信协议栈，参与标准协议实现。"
+      }
+    ]
+  },
+  {
+    "major": "自动化",
+    "category": "工学",
+    "primary_jobs": [
+      {
+        "job_title": "PLC工程师",
+        "tags": ["西门子PLC", "梯形图", "HMI", "工业通信", "调试"],
+        "typical_companies": ["西门子", "ABB", "汇川技术", "台达电子"],
+        "salary_range_p50": "10k-18k",
+        "difficulty": "低",
+        "description": "编写PLC程序，完成自动化产线的电气设计与调试。"
+      },
+      {
+        "job_title": "机器人系统集成工程师",
+        "tags": ["工业机器人", "视觉引导", "轨迹规划", "ROS", "调试"],
+        "typical_companies": ["大疆创新", "汇川技术", "新松机器人", "埃斯顿"],
+        "salary_range_p50": "12k-22k",
+        "difficulty": "中",
+        "description": "集成机器人系统与周边设备，完成产线自动化方案落地。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "自动化测试工程师",
+        "tags": ["Python", "LabVIEW", "测试脚本", "仪器控制", "数据采集"],
+        "typical_companies": ["华为", "汇川技术", "中兴通讯", "比亚迪"],
+        "salary_range_p50": "12k-20k",
+        "difficulty": "中",
+        "description": "开发自动化测试系统，提升测试效率与一致性。"
+      }
+    ]
+  },
+  {
+    "major": "数学与应用数学",
+    "category": "理学",
+    "primary_jobs": [
+      {
+        "job_title": "数据分析师",
+        "tags": ["SQL", "Python", "Tableau", "统计学", "A/B测试"],
+        "typical_companies": ["阿里", "腾讯", "字节跳动", "美团"],
+        "salary_range_p50": "18k-28k",
+        "difficulty": "中",
+        "description": "通过数据挖掘与分析驱动业务决策。"
+      },
+      {
+        "job_title": "量化策略研究员",
+        "tags": ["Python", "统计建模", "因子分析", "回测框架", "C++"],
+        "typical_companies": ["九坤投资", "幻方量化", "明汯投资", "锐天投资"],
+        "salary_range_p50": "25k-50k",
+        "difficulty": "高",
+        "description": "构建量化交易策略，进行回测与实盘监控。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "算法工程师",
+        "tags": ["机器学习", "优化算法", "数学建模", "Python", "论文复现"],
+        "typical_companies": ["百度", "阿里", "腾讯", "科大讯飞"],
+        "salary_range_p50": "22k-38k",
+        "difficulty": "高",
+        "description": "将数学理论应用于算法模型，优化求解效率。"
+      }
+    ]
+  },
+  {
+    "major": "统计学",
+    "category": "理学",
+    "primary_jobs": [
+      {
+        "job_title": "数据分析师",
+        "tags": ["SQL", "Python", "Excel", "回归分析", "可视化"],
+        "typical_companies": ["腾讯", "京东", "美团", "网易"],
+        "salary_range_p50": "16k-26k",
+        "difficulty": "中",
+        "description": "设计指标体系，输出分析报告，支持运营决策。"
+      },
+      {
+        "job_title": "风控建模师",
+        "tags": ["逻辑回归", "评分卡", "SQL", "Python", "特征工程"],
+        "typical_companies": ["蚂蚁集团", "微众银行", "京东数科", "平安科技"],
+        "salary_range_p50": "20k-35k",
+        "difficulty": "中",
+        "description": "构建信用评分与反欺诈模型，降低业务风险。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "生物统计师",
+        "tags": ["SAS", "R语言", "临床试验", "统计分析计划", "CDISC"],
+        "typical_companies": ["药明康德", "恒瑞医药", "百济神州", "IQVIA"],
+        "salary_range_p50": "15k-25k",
+        "difficulty": "中",
+        "description": "为临床试验设计统计方案，完成数据分析与报告。"
+      }
+    ]
+  },
+  {
+    "major": "物理学",
+    "category": "理学",
+    "primary_jobs": [
+      {
+        "job_title": "光学工程师",
+        "tags": ["光学设计", "Zemax", "光机结构", "激光", "成像系统"],
+        "typical_companies": ["华为", "大疆创新", "舜宇光学", "联创电子"],
+        "salary_range_p50": "15k-25k",
+        "difficulty": "中",
+        "description": "进行光学系统设计与仿真，支撑产品光学方案选型。"
+      },
+      {
+        "job_title": "半导体工艺工程师",
+        "tags": ["薄膜工艺", "刻蚀", "光刻", "半导体物理", "良率提升"],
+        "typical_companies": ["中芯国际", "华虹半导体", "台积电", "长江存储"],
+        "salary_range_p50": "15k-25k",
+        "difficulty": "中",
+        "description": "负责晶圆制造工艺的开发与优化。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "科研助理",
+        "tags": ["实验设计", "数据处理", "LaTeX", "MATLAB", "论文撰写"],
+        "typical_companies": ["中科院物理所", "清华大学", "北京大学", "复旦大学"],
+        "salary_range_p50": "8k-15k",
+        "difficulty": "低",
+        "description": "协助科研项目的实验设计与数据分析。"
+      }
+    ]
+  },
+  {
+    "major": "经济学",
+    "category": "经济学",
+    "primary_jobs": [
+      {
+        "job_title": "经济分析师",
+        "tags": ["宏观分析", "Python", "数据可视化", "计量经济学", "报告撰写"],
+        "typical_companies": ["中信证券", "中金公司", "国泰君安", "华泰证券"],
+        "salary_range_p50": "15k-25k",
+        "difficulty": "中",
+        "description": "跟踪宏观经济指标，撰写行业研究报告。"
+      },
+      {
+        "job_title": "行业研究员",
+        "tags": ["行业分析", "财务建模", "Wind", "估值模型", "深度报告"],
+        "typical_companies": ["中信证券", "中金公司", "海通证券", "广发证券"],
+        "salary_range_p50": "18k-30k",
+        "difficulty": "中",
+        "description": "深入研究特定行业，输出投资价值分析报告。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "公务员/事业单位",
+        "tags": ["申论", "行测", "政策分析", "公文写作", "调研能力"],
+        "typical_companies": ["国家发改委", "财政部", "地方统计局", "央行"],
+        "salary_range_p50": "8k-15k",
+        "difficulty": "高",
+        "description": "参与经济政策研究与执行，服务政府决策。"
+      }
+    ]
+  },
+  {
+    "major": "金融学",
+    "category": "经济学",
+    "primary_jobs": [
+      {
+        "job_title": "投资银行分析师",
+        "tags": ["财务建模", "估值分析", "尽职调查", "Excel", "PPT"],
+        "typical_companies": ["中信证券", "中金公司", "华泰联合", "中信建投"],
+        "salary_range_p50": "20k-35k",
+        "difficulty": "高",
+        "description": "参与IPO、并购等项目的尽调与材料制作。"
+      },
+      {
+        "job_title": "基金研究员",
+        "tags": ["财务分析", "估值模型", "行业研究", "Wind", "路演"],
+        "typical_companies": ["易方达基金", "广发基金", "南方基金", "嘉实基金"],
+        "salary_range_p50": "18k-30k",
+        "difficulty": "中",
+        "description": "挖掘优质投资标的，为基金经理提供研究支持。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "风险管理师",
+        "tags": ["风险建模", "巴塞尔协议", "VaR", "Python", "SQL"],
+        "typical_companies": ["中国银行", "工商银行", "招商银行", "平安银行"],
+        "salary_range_p50": "15k-25k",
+        "difficulty": "中",
+        "description": "构建风险计量模型，监控并报告风险指标。"
+      }
+    ]
+  },
+  {
+    "major": "国际经济与贸易",
+    "category": "经济学",
+    "primary_jobs": [
+      {
+        "job_title": "外贸业务员",
+        "tags": ["B2B平台", "客户开发", "外贸流程", "商务英语", "阿里巴巴国际站"],
+        "typical_companies": ["阿里国际站", "SHEIN", "传音控股", "华大基因"],
+        "salary_range_p50": "10k-20k",
+        "difficulty": "低",
+        "description": "开发海外客户，完成外贸订单的全流程跟进。"
+      },
+      {
+        "job_title": "跨境电商运营",
+        "tags": ["亚马逊", "Shopify", "选品", "广告投放", "供应链管理"],
+        "typical_companies": ["SHEIN", "安克创新", "PatPat", "子不语"],
+        "salary_range_p50": "12k-22k",
+        "difficulty": "中",
+        "description": "运营跨境店铺，优化选品与广告策略提升GMV。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "国际结算专员",
+        "tags": ["国际结算", "外汇", "信用证", "SWIFT", "合规审查"],
+        "typical_companies": ["中国银行", "工商银行", "渣打银行", "汇丰银行"],
+        "salary_range_p50": "10k-18k",
+        "difficulty": "低",
+        "description": "处理国际结算业务，确保合规与资金安全。"
+      }
+    ]
+  },
+  {
+    "major": "工商管理",
+    "category": "管理学",
+    "primary_jobs": [
+      {
+        "job_title": "管理培训生",
+        "tags": ["轮岗培训", "项目管理", "商业分析", "PPT", "跨部门协作"],
+        "typical_companies": ["宝洁", "联合利华", "华为", "腾讯"],
+        "salary_range_p50": "15k-25k",
+        "difficulty": "中",
+        "description": "通过轮岗了解各业务模块，逐步承担管理职责。"
+      },
+      {
+        "job_title": "商业分析师",
+        "tags": ["SQL", "Excel", "数据建模", "业务洞察", "Tableau"],
+        "typical_companies": ["阿里", "腾讯", "字节跳动", "美团"],
+        "salary_range_p50": "18k-28k",
+        "difficulty": "中",
+        "description": "分析业务数据，输出策略建议，支撑管理层决策。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "企业管理咨询顾问",
+        "tags": ["战略咨询", "行业研究", "PPT", "访谈", "方案设计"],
+        "typical_companies": ["麦肯锡", "BCG", "贝恩", "德勤"],
+        "salary_range_p50": "18k-30k",
+        "difficulty": "高",
+        "description": "为企业客户提供战略与运营咨询服务。"
+      }
+    ]
+  },
+  {
+    "major": "市场营销",
+    "category": "管理学",
+    "primary_jobs": [
+      {
+        "job_title": "品牌营销专员",
+        "tags": ["品牌策划", "内容营销", "社交媒体", "市场调研", "创意方案"],
+        "typical_companies": ["宝洁", "欧莱雅", "联合利华", "蒙牛"],
+        "salary_range_p50": "10k-18k",
+        "difficulty": "低",
+        "description": "策划并执行品牌营销活动，提升品牌知名度与美誉度。"
+      },
+      {
+        "job_title": "数字营销经理",
+        "tags": ["SEM", "信息流广告", "抖音", "数据分析", "ROI优化"],
+        "typical_companies": ["字节跳动", "腾讯广告", "阿里妈妈", "百度营销"],
+        "salary_range_p50": "15k-25k",
+        "difficulty": "中",
+        "description": "制定并执行数字营销策略，优化投放ROI。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "用户增长运营",
+        "tags": ["用户增长", "A/B测试", "渠道运营", "数据驱动", "活动策划"],
+        "typical_companies": ["拼多多", "美团", "快手", "小红书"],
+        "salary_range_p50": "15k-25k",
+        "difficulty": "中",
+        "description": "制定增长策略，优化获客成本与用户留存。"
+      }
+    ]
+  },
+  {
+    "major": "会计学",
+    "category": "管理学",
+    "primary_jobs": [
+      {
+        "job_title": "会计师",
+        "tags": ["财务报表", "税务申报", "会计准则", "审计", "用友"],
+        "typical_companies": ["四大会计师事务所", "华为", "字节跳动", "万科"],
+        "salary_range_p50": "10k-18k",
+        "difficulty": "低",
+        "description": "处理企业日常财务核算与报表编制。"
+      },
+      {
+        "job_title": "审计师",
+        "tags": ["审计程序", "风险评估", "内控测试", "底稿编制", "数据分析"],
+        "typical_companies": ["普华永道", "德勤", "安永", "毕马威"],
+        "salary_range_p50": "12k-22k",
+        "difficulty": "中",
+        "description": "执行审计程序，识别财务风险，出具审计报告。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "财务分析师",
+        "tags": ["财务建模", "Excel", "预算管理", "成本分析", "Power BI"],
+        "typical_companies": ["腾讯", "阿里", "京东", "美团"],
+        "salary_range_p50": "15k-25k",
+        "difficulty": "中",
+        "description": "进行财务数据建模与预测，支持经营决策。"
+      }
+    ]
+  },
+  {
+    "major": "人力资源管理",
+    "category": "管理学",
+    "primary_jobs": [
+      {
+        "job_title": "HRBP",
+        "tags": ["招聘", "员工关系", "绩效管理", "组织诊断", "人才发展"],
+        "typical_companies": ["字节跳动", "阿里", "腾讯", "华为"],
+        "salary_range_p50": "15k-25k",
+        "difficulty": "中",
+        "description": "深入业务团队，提供人力资源解决方案。"
+      },
+      {
+        "job_title": "招聘专员",
+        "tags": ["简历筛选", "面试安排", "渠道管理", "人才库", "Offer谈判"],
+        "typical_companies": ["猎聘", "BOSS直聘", "智联招聘", "华为"],
+        "salary_range_p50": "8k-15k",
+        "difficulty": "低",
+        "description": "负责各渠道人才搜寻与招聘流程跟进。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "培训与发展专员",
+        "tags": ["培训规划", "课程设计", "效果评估", "企业大学", "学习平台"],
+        "typical_companies": ["华为", "腾讯", "宝洁", "平安集团"],
+        "salary_range_p50": "10k-18k",
+        "difficulty": "低",
+        "description": "规划并实施员工培训项目，推动人才梯队建设。"
+      }
+    ]
+  },
+  {
+    "major": "信息管理与信息系统",
+    "category": "管理学",
+    "primary_jobs": [
+      {
+        "job_title": "产品经理",
+        "tags": ["需求分析", "原型设计", "PRD撰写", "项目推进", "数据分析"],
+        "typical_companies": ["字节跳动", "腾讯", "阿里", "美团"],
+        "salary_range_p50": "18k-30k",
+        "difficulty": "中",
+        "description": "负责产品规划与迭代，协调设计研发资源。"
+      },
+      {
+        "job_title": "IT咨询顾问",
+        "tags": ["SAP", "Oracle", "业务流程", "需求调研", "方案设计"],
+        "typical_companies": ["德勤", "埃森哲", "IBM", "用友"],
+        "salary_range_p50": "15k-25k",
+        "difficulty": "中",
+        "description": "为客户提供IT系统规划与实施咨询服务。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "数据库管理员",
+        "tags": ["MySQL", "Oracle", "SQL优化", "备份恢复", "性能调优"],
+        "typical_companies": ["阿里云", "腾讯云", "华为", "PingCAP"],
+        "salary_range_p50": "15k-25k",
+        "difficulty": "中",
+        "description": "维护数据库高可用，优化查询性能，保障数据安全。"
+      }
+    ]
+  },
+  {
+    "major": "英语",
+    "category": "文学",
+    "primary_jobs": [
+      {
+        "job_title": "英语教师",
+        "tags": ["教学设计", "课程开发", "英语专业八级", "课堂管理", "跨文化交流"],
+        "typical_companies": ["新东方", "好未来", "猿辅导", "公立学校"],
+        "salary_range_p50": "8k-15k",
+        "difficulty": "低",
+        "description": "从事英语教学工作，设计课程并评估学生学习效果。"
+      },
+      {
+        "job_title": "翻译/本地化专员",
+        "tags": ["笔译", "口译", "CAT工具", "本地化", "技术文档"],
+        "typical_companies": ["华为", "字节跳动", "网易", "传神语联"],
+        "salary_range_p50": "10k-18k",
+        "difficulty": "中",
+        "description": "完成中英文翻译与本地化项目管理。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "海外运营专员",
+        "tags": ["海外市场", "英文运营", "社交媒体", "用户增长", "内容运营"],
+        "typical_companies": ["字节跳动", "SHEIN", "传音控股", "欢聚集团"],
+        "salary_range_p50": "12k-20k",
+        "difficulty": "中",
+        "description": "负责海外市场的内容运营与用户增长。"
+      }
+    ]
+  },
+  {
+    "major": "新闻学",
+    "category": "文学",
+    "primary_jobs": [
+      {
+        "job_title": "新媒体编辑",
+        "tags": ["内容策划", "公众号运营", "热点追踪", "图文排版", "视频剪辑"],
+        "typical_companies": ["字节跳动", "腾讯", "网易", "澎湃新闻"],
+        "salary_range_p50": "8k-15k",
+        "difficulty": "低",
+        "description": "策划并制作新媒体内容，运营官方账号。"
+      },
+      {
+        "job_title": "内容运营",
+        "tags": ["内容策划", "数据分析", "SEO", "用户画像", "活动运营"],
+        "typical_companies": ["小红书", "知乎", "B站", "微博"],
+        "salary_range_p50": "10k-18k",
+        "difficulty": "低",
+        "description": "规划内容策略，提升平台内容质量与用户活跃度。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "公共关系专员",
+        "tags": ["媒体关系", "危机公关", "新闻稿", "舆情监测", "品牌传播"],
+        "typical_companies": ["蓝色光标", "奥美", "万博宣伟", "爱德曼"],
+        "salary_range_p50": "10k-18k",
+        "difficulty": "低",
+        "description": "维护媒体关系，撰写公关稿件，处理舆情事件。"
+      }
+    ]
+  },
+  {
+    "major": "广告学",
+    "category": "文学",
+    "primary_jobs": [
+      {
+        "job_title": "广告策划",
+        "tags": ["创意策划", "品牌策略", "提案撰写", "市场调研", "媒介投放"],
+        "typical_companies": ["蓝色光标", "奥美", "阳狮集团", "WPP"],
+        "salary_range_p50": "10k-18k",
+        "difficulty": "低",
+        "description": "为品牌客户策划广告方案，制定媒介投放策略。"
+      },
+      {
+        "job_title": "创意文案",
+        "tags": ["文案撰写", "创意构思", "品牌调性", "脚本撰写", "社交媒体"],
+        "typical_companies": ["奥美", "李奥贝纳", "电通安吉斯", "字节跳动"],
+        "salary_range_p50": "8k-15k",
+        "difficulty": "低",
+        "description": "撰写创意文案与广告脚本，传递品牌价值。"
+      }
+    ],
+    "extended_jobs": [
+      {
+        "job_title": "媒介策划",
+        "tags": ["媒介采购", "投放策略", "效果监测", "预算管理", "数据分析"],
+        "typical_companies": ["群邑", "电通安吉斯", "阳狮集团", "腾讯广告"],
+        "salary_range_p50": "10k-18k",
+        "difficulty": "低",
+        "description": "制定媒介投放计划，优化广告预算分配与效果。"
+      }
+    ]
+  }
+]

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import health, chat, resume
+from app.api import health, chat, resume, jobs
 
 app = FastAPI(
     title="JobPilot AI Service",
@@ -20,6 +20,7 @@ app.add_middleware(
 app.include_router(health.router, tags=["Health"])
 app.include_router(chat.router, prefix="/chat", tags=["Chat"])
 app.include_router(resume.router, prefix="/resume", tags=["Resume"])
+app.include_router(jobs.router, prefix="/jobs", tags=["Jobs"])
 
 
 @app.get("/")
