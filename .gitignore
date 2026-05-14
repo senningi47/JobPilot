@@ -19,6 +19,7 @@ backend/target/
 backend/*.class
 backend/*.jar
 backend/*.war
+backend/uploads/
 
 # === AI Service (Python) ===
 ai-service/__pycache__/
