@@ -43,6 +43,9 @@ public class ResumeServiceImpl implements ResumeService {
     @Value("${app.ai-service.url}")
     private String aiServiceUrl;
 
+    @Value("${app.uploads.dir:uploads}")
+    private String uploadBaseDir;
+
     public ResumeServiceImpl(ResumeRepository resumeRepository,
                              RestTemplate restTemplate,
                              ObjectMapper objectMapper) {
@@ -68,11 +71,20 @@ public class ResumeServiceImpl implements ResumeService {
             throw new BusinessException(2002, "文件大小超过限制，最大允许 10MB");
         }
 
-        // 3. Save to local disk
+        // 3. Read bytes before transfer (transferTo may delete temp file)
+        byte[] fileBytes;
+        try {
+            fileBytes = file.getBytes();
+        } catch (IOException e) {
+            log.error("Failed to read file bytes: {}", e.getMessage(), e);
+            throw new BusinessException(2002, "文件读取失败");
+        }
+
+        // 4. Save to local disk
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         String storedFilename = timestamp + "_" + originalFilename;
         String relativePath = "uploads/" + userId + "/" + storedFilename;
-        Path uploadDir = Paths.get("uploads", String.valueOf(userId));
+        Path uploadDir = Paths.get(uploadBaseDir, String.valueOf(userId));
         try {
             Files.createDirectories(uploadDir);
             file.transferTo(uploadDir.resolve(storedFilename).toFile());
@@ -81,10 +93,10 @@ public class ResumeServiceImpl implements ResumeService {
             throw new BusinessException(2002, "文件保存失败");
         }
 
-        // 4. Call AI service POST /resume/upload (multipart)
+        // 5. Call AI service POST /resume/upload (multipart)
         Map<String, Object> structuredData;
         try {
-            byte[] fileBytes = file.getBytes();
+
             ByteArrayResource fileResource = new ByteArrayResource(fileBytes) {
                 @Override
                 public String getFilename() {
@@ -216,9 +228,17 @@ public class ResumeServiceImpl implements ResumeService {
     private Object fromJson(String json) {
         if (json == null || json.isEmpty()) return null;
         try {
-            return objectMapper.readValue(json, new TypeReference<Map<String, Object>>() {});
+            Object parsed = objectMapper.readValue(json, Object.class);
+            if (parsed instanceof Map || parsed instanceof List) {
+                return parsed;
+            }
+            // If it's a String, try parsing again (double-serialized)
+            if (parsed instanceof String) {
+                return objectMapper.readValue((String) parsed, Object.class);
+            }
+            return parsed;
         } catch (Exception e) {
-            log.warn("Failed to deserialize JSON: {}", e.getMessage());
+            log.warn("Failed to deserialize JSON field: {}", e.getMessage());
             return null;
         }
     }
