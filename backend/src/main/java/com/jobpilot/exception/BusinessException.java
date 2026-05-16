@@ -37,4 +37,8 @@ public class BusinessException extends RuntimeException {
     public static BusinessException aiServiceUnavailable() {
         return new BusinessException(5002, "AI service unavailable");
     }
+
+    public static BusinessException aiError(String message) {
+        return new BusinessException(5003, message);
+    }
 }

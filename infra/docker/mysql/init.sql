@@ -109,6 +109,35 @@ CREATE TABLE IF NOT EXISTS chat_messages (
     INDEX idx_user_sessions (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- AI Provider Configuration
+CREATE TABLE IF NOT EXISTS ai_provider_config (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT COMMENT 'NULL 表示系统全局配置',
+    provider_name VARCHAR(50) NOT NULL COMMENT 'groq / siliconflow / openrouter / custom',
+    display_name VARCHAR(100) COMMENT '展示名称',
+    base_url VARCHAR(255),
+    api_key VARCHAR(255) COMMENT '加密存储',
+    model_name VARCHAR(100),
+    is_active BOOLEAN DEFAULT FALSE,
+    is_builtin BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_active (is_active)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Search Provider Configuration
+CREATE TABLE IF NOT EXISTS search_provider_config (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT COMMENT 'NULL 表示系统全局配置',
+    provider_name VARCHAR(50) NOT NULL COMMENT 'tavily / serper / searxng / bing / custom',
+    display_name VARCHAR(100),
+    api_key VARCHAR(255) COMMENT '加密存储，SearXNG 可为空',
+    base_url VARCHAR(255) COMMENT 'SearXNG 自定义实例填这里',
+    is_active BOOLEAN DEFAULT FALSE,
+    is_builtin BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_active (is_active)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- Job Alerts
 CREATE TABLE IF NOT EXISTS job_alerts (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,

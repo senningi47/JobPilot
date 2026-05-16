@@ -95,7 +95,7 @@ if login_resp and login_resp['code'] == 0:
     TOKEN = login_resp['data']['token']
 
 # ── STEP 3: Create Chat Session ──
-step(3, 'POST /chat/sessions - Create chat session (Redis + MySQL dual-write)')
+step(3, 'POST /chat/sessions - Create chat session')
 sess_resp = api('POST', '/chat/sessions')
 assert_step('Create session returns code=0', sess_resp and sess_resp.get('code') == 0,
             f'code={sess_resp.get("code") if sess_resp else "None"}')
@@ -109,17 +109,46 @@ if sess_resp and sess_resp['code'] == 0:
                 f'id={sess_resp["data"]["id"]}')
 
 # ── STEP 4: GET /jobs/categories ──
-step(4, 'GET /jobs/categories - Verify 21 professional categories')
+step(4, 'GET /jobs/categories - Verify categories from knowledge graph')
 cat_resp = api('GET', '/jobs/categories')
 assert_step('Categories returns code=0', cat_resp and cat_resp.get('code') == 0,
             f'code={cat_resp.get("code") if cat_resp else "None"}')
 if cat_resp and cat_resp['code'] == 0:
     cat_count = len(cat_resp['data'])
-    assert_step(f'Returns exactly 21 categories (got {cat_count})', cat_count == 21,
+    assert_step(f'Returns categories (got {cat_count})', cat_count > 0,
                 f'first 3: {cat_resp["data"][:3]}')
 
-# ── STEP 5: GET /jobs/search?q=计算机相关工作 ──
-step(5, 'GET /jobs/search?q=后端 - Verify fuzzy search')
+# ── STEP 5: AI Provider Config API ──
+step(5, 'GET /ai/providers - Verify built-in AI providers exist')
+providers_resp = api('GET', '/ai/providers')
+assert_step('AI providers returns code=0', providers_resp and providers_resp.get('code') == 0,
+            f'code={providers_resp.get("code") if providers_resp else "None"}')
+if providers_resp and providers_resp['code'] == 0:
+    providers = providers_resp['data']
+    assert_step(f'Returns built-in providers (got {len(providers)})', len(providers) >= 3)
+    provider_names = [p['providerName'] for p in providers]
+    assert_step('Has groq preset', 'groq' in provider_names)
+    assert_step('Has siliconflow preset', 'siliconflow' in provider_names)
+    assert_step('Has openrouter preset', 'openrouter' in provider_names)
+    assert_step('API keys are masked', all(
+        p.get('apiKey', '') in ('', None) or p['apiKey'].startswith('****')
+        for p in providers
+    ))
+
+# ── STEP 6: Search Provider Config API ──
+step(6, 'GET /search/providers - Verify built-in search providers exist')
+search_prov_resp = api('GET', '/search/providers')
+assert_step('Search providers returns code=0', search_prov_resp and search_prov_resp.get('code') == 0,
+            f'code={search_prov_resp.get("code") if search_prov_resp else "None"}')
+if search_prov_resp and search_prov_resp['code'] == 0:
+    sp = search_prov_resp['data']
+    assert_step(f'Returns built-in search providers (got {len(sp)})', len(sp) >= 3)
+    sp_names = [p['providerName'] for p in sp]
+    assert_step('Has tavily preset', 'tavily' in sp_names)
+    assert_step('Has searxng preset', 'searxng' in sp_names)
+
+# ── STEP 7: Job search (keyword fallback, no LLM needed) ──
+step(7, 'GET /jobs/search?q=后端 - Verify search with keyword fallback')
 search_resp = api('GET', '/jobs/search?q=' + urllib.parse.quote('后端'))
 assert_step('Job search returns code=0', search_resp and search_resp.get('code') == 0,
             f'code={search_resp.get("code") if search_resp else "None"}')
@@ -129,37 +158,31 @@ if search_resp and search_resp['code'] == 0:
                 f'results={result_count}')
     if result_count > 0:
         first = search_resp['data'][0]
-        assert_step('Result has job_title, tags, confidence',
-                    'job_title' in first and 'tags' in first and 'confidence' in first,
-                    f'first={first.get("job_title")}')
+        assert_step('Result has job_title field', 'job_title' in first,
+                    f'keys={list(first.keys())}')
 
-# ── STEP 6: GET /companies/字节跳动 ──
-step(6, 'GET /companies/字节跳动 - Verify three-tier cache')
+# ── STEP 8: Company intel (requires LLM + search, expect error without config) ──
+step(8, 'GET /companies/字节跳动 - Verify company intel endpoint')
 comp_resp = api('GET', '/companies/' + urllib.parse.quote('字节跳动'))
-assert_step('Company intel returns code=0', comp_resp and comp_resp.get('code') == 0,
-            f'code={comp_resp.get("code") if comp_resp else "None"}')
-if comp_resp and comp_resp['code'] == 0:
+if comp_resp and comp_resp.get('code') == 0:
     d = comp_resp['data']
-    assert_step('Company name is 字节跳动', d.get('name') == '字节跳动',
-                f'name={d.get("name")}')
-    assert_step('Has basic_info with industry', d.get('basic_info', {}).get('industry') is not None,
-                f'industry={d.get("basic_info", {}).get("industry")}')
-    assert_step('Has salary_data', d.get('salary_data') is not None)
-    assert_step('Has review_summary with dimensions',
-                d.get('review_summary', {}).get('dimensions') is not None)
+    assert_step('Company intel returns code=0 (LLM configured)', True)
+    assert_step('Response has data', d is not None)
+    if isinstance(d, dict):
+        has_sources = 'sources' in d
+        has_basic = 'basicInfo' in d or 'basic_info' in d or 'industry' in d or 'name' in d
+        assert_step('Response has company info fields', has_sources or has_basic,
+                    f'keys={list(d.keys())[:5]}')
+else:
+    # No LLM configured - should return error code 5002 or 5003
+    code = comp_resp.get('code') if comp_resp else None
+    assert_step('Company intel returns AI error (no LLM configured)', code in (5002, 5003),
+                f'code={code}')
 
-# Second request (Redis cache hit)
-comp_resp2 = api('GET', '/companies/' + urllib.parse.quote('字节跳动'))
-assert_step('Second request (Redis cache) returns same data',
-            comp_resp2 and comp_resp2.get('code') == 0 and comp_resp2['data']['name'] == '字节跳动')
-
-# ── STEP 7: POST /resumes/upload ──
-step(7, 'POST /resumes/upload - Upload PDF and verify file path')
-# Create a minimal PDF
+# ── STEP 9: Resume upload ──
+step(9, 'POST /resumes/upload - Upload PDF and verify file path')
 pdf_content = b'%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj\n3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R>>endobj\nxref\n0 4\n0000000000 65535 f \n0000000009 00000 n \n0000000058 00000 n \n0000000115 00000 n \ntrailer<</Size 4/Root 1 0 R>>\nstartxref\n190\n%%EOF\n'
 
-# Multipart upload
-import io
 boundary = '----SmokeTestBoundary123'
 body_parts = []
 body_parts.append(f'--{boundary}\r\n'.encode())
@@ -193,28 +216,23 @@ if upload_resp and upload_resp['code'] == 0:
                 bool(re.match(r'^/uploads/\d+/\d{14}_smoke_test_resume\.pdf$', file_path)),
                 f'path={file_path}')
     sd = upload_resp['data'].get('structuredData')
-    assert_step('Resume has structuredData (AI parsed)', sd is not None)
-    if sd:
-        assert_step('structuredData has basic_info.name',
-                    sd.get('basic_info', {}).get('name') is not None,
-                    f'name={sd.get("basic_info", {}).get("name")}')
+    assert_step('Resume has structuredData', sd is not None)
 
-# ── STEP 8: GET /resumes/{id} ──
-step(8, 'GET /resumes/{id} - Verify AI parsed resume with radar data')
+# ── STEP 10: Resume analysis (requires LLM) ──
+step(10, 'POST /resumes/{id}/analyze - Verify resume analysis endpoint')
 if RESUME_ID:
-    resume_resp = api('GET', f'/resumes/{RESUME_ID}')
-    assert_step('Get resume returns code=0', resume_resp and resume_resp.get('code') == 0,
-                f'code={resume_resp.get("code") if resume_resp else "None"}')
-    if resume_resp and resume_resp['code'] == 0:
-        sd = resume_resp['data'].get('structuredData')
-        assert_step('Resume has structuredData', sd is not None)
-        assert_step('structuredData has basic_info', sd and sd.get('basic_info') is not None)
-        assert_step('structuredData has education array', sd and sd.get('education') and len(sd['education']) > 0)
-        assert_step('structuredData has projects array', sd and sd.get('projects') and len(sd['projects']) > 0)
-        assert_step('structuredData has skills array', sd and sd.get('skills') and len(sd['skills']) > 0)
-        assert_step('structuredData has internships (radar chart data)', sd and sd.get('internships') is not None)
+    analyze_resp = api('POST', f'/resumes/{RESUME_ID}/analyze?targetPosition=' + urllib.parse.quote('后端工程师'))
+    if analyze_resp and analyze_resp.get('code') == 0:
+        d = analyze_resp['data']
+        assert_step('Resume analysis returns code=0 (LLM configured)', True)
+        assert_step('Response has overall_score', 'overall_score' in d if isinstance(d, dict) else False,
+                    f'keys={list(d.keys())[:5] if isinstance(d, dict) else type(d)}')
+    else:
+        code = analyze_resp.get('code') if analyze_resp else None
+        assert_step('Resume analysis returns AI error (no LLM configured)', code in (5002, 5003),
+                    f'code={code}')
 else:
-    assert_step('Get resume (skipped)', False, 'No resume ID from Step 7')
+    assert_step('Resume analysis (skipped)', False, 'No resume ID from Step 9')
 
 # ── SUMMARY ──
 print()

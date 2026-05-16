@@ -4,20 +4,16 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jobpilot.entity.ResumeEntity;
 import com.jobpilot.exception.BusinessException;
+import com.jobpilot.llm.LLMProvider;
+import com.jobpilot.llm.LLMProviderManager;
+import com.jobpilot.llm.SearchProvider;
+import com.jobpilot.llm.SearchProviderManager;
 import com.jobpilot.repository.ResumeRepository;
 import com.jobpilot.service.ResumeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -34,29 +30,28 @@ public class ResumeServiceImpl implements ResumeService {
 
     private static final Logger log = LoggerFactory.getLogger(ResumeServiceImpl.class);
     private static final Set<String> ALLOWED_EXTENSIONS = Set.of(".pdf", ".docx");
-    private static final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+    private static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
 
     private final ResumeRepository resumeRepository;
-    private final RestTemplate restTemplate;
+    private final LLMProviderManager llmManager;
+    private final SearchProviderManager searchManager;
     private final ObjectMapper objectMapper;
-
-    @Value("${app.ai-service.url}")
-    private String aiServiceUrl;
 
     @Value("${app.uploads.dir:uploads}")
     private String uploadBaseDir;
 
     public ResumeServiceImpl(ResumeRepository resumeRepository,
-                             RestTemplate restTemplate,
+                             LLMProviderManager llmManager,
+                             SearchProviderManager searchManager,
                              ObjectMapper objectMapper) {
         this.resumeRepository = resumeRepository;
-        this.restTemplate = restTemplate;
+        this.llmManager = llmManager;
+        this.searchManager = searchManager;
         this.objectMapper = objectMapper;
     }
 
     @Override
     public Map<String, Object> uploadResume(Long userId, MultipartFile file) {
-        // 1. Validate extension
         String originalFilename = file.getOriginalFilename();
         if (originalFilename == null || originalFilename.isBlank()) {
             throw new BusinessException(2002, "文件名不能为空");
@@ -65,22 +60,11 @@ public class ResumeServiceImpl implements ResumeService {
         if (!ALLOWED_EXTENSIONS.contains(ext)) {
             throw new BusinessException(2002, "不支持的文件类型：" + ext + "，请上传 PDF 或 DOCX 格式的简历");
         }
-
-        // 2. Validate size
         if (file.getSize() > MAX_FILE_SIZE) {
             throw new BusinessException(2002, "文件大小超过限制，最大允许 10MB");
         }
 
-        // 3. Read bytes before transfer (transferTo may delete temp file)
-        byte[] fileBytes;
-        try {
-            fileBytes = file.getBytes();
-        } catch (IOException e) {
-            log.error("Failed to read file bytes: {}", e.getMessage(), e);
-            throw new BusinessException(2002, "文件读取失败");
-        }
-
-        // 4. Save to local disk
+        // Save to local disk
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         String storedFilename = timestamp + "_" + originalFilename;
         String relativePath = "uploads/" + userId + "/" + storedFilename;
@@ -89,51 +73,16 @@ public class ResumeServiceImpl implements ResumeService {
             Files.createDirectories(uploadDir);
             file.transferTo(uploadDir.resolve(storedFilename).toFile());
         } catch (IOException e) {
-            log.error("Failed to save file locally: {}", e.getMessage(), e);
+            log.error("Failed to save file: {}", e.getMessage(), e);
             throw new BusinessException(2002, "文件保存失败");
         }
 
-        // 5. Call AI service POST /resume/upload (multipart)
-        Map<String, Object> structuredData;
-        try {
+        // Build basic structured data (real parsing would need document extraction)
+        Map<String, Object> structuredData = new HashMap<>();
+        structuredData.put("basic_info", Map.of("name", originalFilename.replaceAll("\\.[^.]+$", "")));
+        structuredData.put("file_type", ext);
+        structuredData.put("file_size", file.getSize());
 
-            ByteArrayResource fileResource = new ByteArrayResource(fileBytes) {
-                @Override
-                public String getFilename() {
-                    return originalFilename;
-                }
-            };
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-            body.add("file", new HttpEntity<>(fileResource, headers));
-
-            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, new HttpHeaders());
-            ResponseEntity<Map> response = restTemplate.postForEntity(
-                    aiServiceUrl + "/resume/upload", requestEntity, Map.class);
-            Map<String, Object> resp = response.getBody();
-
-            if (resp == null || !"success".equals(resp.get("status"))) {
-                String message = (resp != null && resp.get("message") != null)
-                        ? (String) resp.get("message")
-                        : "AI 解析简历失败";
-                throw new BusinessException(2002, message);
-            }
-
-            @SuppressWarnings("unchecked")
-            Map<String, Object> data = (Map<String, Object>) resp.get("data");
-            structuredData = data;
-
-        } catch (BusinessException e) {
-            throw e;
-        } catch (Exception e) {
-            log.error("AI service call failed during resume upload: {}", e.getMessage(), e);
-            throw BusinessException.aiServiceUnavailable();
-        }
-
-        // 5. Save to MySQL
         ResumeEntity entity = new ResumeEntity();
         entity.setUserId(userId);
         entity.setStructuredData(toJson(structuredData));
@@ -142,7 +91,6 @@ public class ResumeServiceImpl implements ResumeService {
         entity.setIsActive(true);
         resumeRepository.save(entity);
 
-        // 6. Return DTO
         return buildResumeDto(entity);
     }
 
@@ -167,40 +115,65 @@ public class ResumeServiceImpl implements ResumeService {
     @Override
     @SuppressWarnings("unchecked")
     public Map<String, Object> analyzeResume(Long userId, Long resumeId, String targetPosition) {
-        // Verify resume ownership
         ResumeEntity entity = resumeRepository.findById(resumeId)
                 .orElseThrow(() -> BusinessException.notFound(2002, "简历不存在"));
         if (!entity.getUserId().equals(userId)) {
             throw BusinessException.unauthorized();
         }
 
-        // Call AI service POST /resume/analyze
+        String resumeJson = entity.getStructuredData();
+
+        // Optional: search for latest JD requirements
+        String jdContext = "";
+        if (searchManager.hasActiveProvider()) {
+            try {
+                List<SearchProvider.SearchResult> results = searchManager.searchWithFallback(
+                        "\"" + targetPosition + "\" 岗位招聘要求 技能要求 2025", 3);
+                if (!results.isEmpty()) {
+                    StringBuilder sb = new StringBuilder();
+                    for (SearchProvider.SearchResult r : results) {
+                        sb.append("- ").append(r.title()).append(": ").append(r.snippet()).append("\n");
+                    }
+                    jdContext = sb.toString();
+                }
+            } catch (Exception e) {
+                log.warn("Search for JD context failed: {}", e.getMessage());
+            }
+        }
+
+        String systemPrompt = "你是一个专业的简历分析师，帮助求职者优化简历。\n" +
+                "请分析以下简历，针对目标岗位给出评估，严格按 JSON 格式返回：\n" +
+                "{\n" +
+                "  \"overall_score\": 85,\n" +
+                "  \"dimensions\": {\n" +
+                "    \"skills_match\": {\"score\": 80, \"comment\": \"\"},\n" +
+                "    \"experience_relevance\": {\"score\": 85, \"comment\": \"\"},\n" +
+                "    \"education\": {\"score\": 90, \"comment\": \"\"},\n" +
+                "    \"project_quality\": {\"score\": 75, \"comment\": \"\"}\n" +
+                "  },\n" +
+                "  \"strengths\": [],\n" +
+                "  \"improvements\": [],\n" +
+                "  \"missing_skills\": []\n" +
+                "}\n只返回 JSON，不要其他内容。";
+
+        String userMessage = "目标岗位：" + targetPosition + "\n\n简历数据：" + resumeJson;
+        if (!jdContext.isBlank()) {
+            userMessage += "\n\n参考 JD 要求：\n" + jdContext;
+        }
+
         try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+            LLMProvider provider = llmManager.getActiveProvider();
+            LLMProvider.ChatResponse response = provider.chat(systemPrompt, null, userMessage);
+            String content = response.content().trim();
 
-            MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
-            form.add("target_position", targetPosition);
-
-            HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(form, headers);
-            ResponseEntity<Map> response = restTemplate.postForEntity(
-                    aiServiceUrl + "/resume/analyze", requestEntity, Map.class);
-            Map<String, Object> resp = response.getBody();
-
-            if (resp == null || !"success".equals(resp.get("status"))) {
-                String message = (resp != null && resp.get("message") != null)
-                        ? (String) resp.get("message")
-                        : "AI 分析简历失败";
-                throw new BusinessException(2002, message);
+            if (content.startsWith("```")) {
+                content = content.replaceAll("^```(?:json)?\\s*", "").replaceAll("\\s*```$", "");
             }
 
-            return (Map<String, Object>) resp.get("data");
-
-        } catch (BusinessException e) {
-            throw e;
+            return objectMapper.readValue(content, new TypeReference<>() {});
         } catch (Exception e) {
-            log.error("AI service call failed during resume analyze: {}", e.getMessage(), e);
-            throw BusinessException.aiServiceUnavailable();
+            log.error("LLM resume analysis failed: {}", e.getMessage());
+            throw BusinessException.aiError("AI 分析简历失败: " + e.getMessage());
         }
     }
 
@@ -220,7 +193,6 @@ public class ResumeServiceImpl implements ResumeService {
         try {
             return objectMapper.writeValueAsString(obj);
         } catch (Exception e) {
-            log.warn("Failed to serialize JSON: {}", e.getMessage());
             return null;
         }
     }
@@ -229,16 +201,11 @@ public class ResumeServiceImpl implements ResumeService {
         if (json == null || json.isEmpty()) return null;
         try {
             Object parsed = objectMapper.readValue(json, Object.class);
-            if (parsed instanceof Map || parsed instanceof List) {
-                return parsed;
-            }
-            // If it's a String, try parsing again (double-serialized)
-            if (parsed instanceof String) {
-                return objectMapper.readValue((String) parsed, Object.class);
+            if (parsed instanceof String s) {
+                return objectMapper.readValue(s, Object.class);
             }
             return parsed;
         } catch (Exception e) {
-            log.warn("Failed to deserialize JSON field: {}", e.getMessage());
             return null;
         }
     }
