@@ -15,4 +15,6 @@ public interface SearchProviderConfigRepository extends JpaRepository<SearchProv
     Optional<SearchProviderConfigEntity> findByIsActiveTrueAndUserIdIsNull();
 
     boolean existsByIdAndIsBuiltinTrue(Long id);
+
+    long countByIsBuiltinTrue();
 }

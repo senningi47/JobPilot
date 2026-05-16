@@ -15,4 +15,6 @@ public interface AiProviderConfigRepository extends JpaRepository<AiProviderConf
     Optional<AiProviderConfigEntity> findByIsActiveTrueAndUserIdIsNull();
 
     boolean existsByIdAndIsBuiltinTrue(Long id);
+
+    long countByIsBuiltinTrue();
 }

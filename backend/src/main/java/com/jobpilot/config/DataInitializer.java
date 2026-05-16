@@ -26,16 +26,15 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void initAiProviders() {
-        if (aiProviderRepo.count() > 0) return;
+        if (aiProviderRepo.countByIsBuiltinTrue() > 0) return;
 
         createAiProvider("groq", "Groq (免费)", "https://api.groq.com/openai/v1", "llama-3.3-70b-versatile", true);
-        createAiProvider("siliconflow", "SiliconFlow (免费)", "https://api.siliconflow.cn/v1", "Qwen/Qwen2.5-7B-Instruct", true);
+        createAiProvider("siliconflow", "SiliconFlow (免费)", "https://api.siliconflow.cn/v1", "Qwen/Qwen2.5-72B-Instruct", true);
         createAiProvider("openrouter", "OpenRouter (免费)", "https://openrouter.ai/api/v1", "meta-llama/llama-3.1-8b-instruct:free", true);
-        createAiProvider("custom", "自定义", "", "", false);
     }
 
     private void initSearchProviders() {
-        if (searchProviderRepo.count() > 0) return;
+        if (searchProviderRepo.countByIsBuiltinTrue() > 0) return;
 
         createSearchProvider("tavily", "Tavily (推荐)", true);
         createSearchProvider("serper", "Serper (Google)", true);

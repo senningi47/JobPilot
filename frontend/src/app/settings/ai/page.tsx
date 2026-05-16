@@ -54,17 +54,22 @@ export default function AiSettingsPage() {
 function AiProviderTab() {
   const [providers, setProviders] = useState<AiProvider[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [editingKey, setEditingKey] = useState<Record<number, string>>({});
+  const [editingModel, setEditingModel] = useState<Record<number, string>>({});
   const [testing, setTesting] = useState<Record<number, boolean>>({});
   const [testResult, setTestResult] = useState<Record<number, { ok: boolean; msg: string }>>({});
   const [customForm, setCustomForm] = useState({ displayName: "", baseUrl: "", apiKey: "", modelName: "" });
 
   const fetchProviders = useCallback(async () => {
     try {
+      setError(null);
       const res: any = await apiClient.get("/v1/ai/providers");
       setProviders(res.data ?? []);
-    } catch { /* ignore */ }
-    finally { setLoading(false); }
+    } catch (e: any) {
+      console.error("Failed to fetch AI providers:", e);
+      setError(e?.message || "加载失败，请检查后端服务是否运行");
+    } finally { setLoading(false); }
   }, []);
 
   useEffect(() => { fetchProviders(); }, [fetchProviders]);
@@ -75,6 +80,16 @@ function AiProviderTab() {
     try {
       await apiClient.put(`/v1/ai/providers/${id}`, { apiKey: key });
       setEditingKey((prev) => { const next = { ...prev }; delete next[id]; return next; });
+      fetchProviders();
+    } catch { /* ignore */ }
+  };
+
+  const handleSaveModel = async (id: number) => {
+    const model = editingModel[id];
+    if (!model) return;
+    try {
+      await apiClient.put(`/v1/ai/providers/${id}`, { modelName: model });
+      setEditingModel((prev) => { const next = { ...prev }; delete next[id]; return next; });
       fetchProviders();
     } catch { /* ignore */ }
   };
@@ -124,6 +139,15 @@ function AiProviderTab() {
     return <div className="grid gap-4 mt-4">{Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-32 rounded-xl" />)}</div>;
   }
 
+  if (error) {
+    return (
+      <div className="mt-4 p-6 border border-destructive/50 rounded-lg bg-destructive/5 text-center">
+        <p className="text-sm text-destructive mb-3">{error}</p>
+        <Button variant="outline" size="sm" onClick={fetchProviders}>重试</Button>
+      </div>
+    );
+  }
+
   return (
     <div className="grid gap-4 mt-4">
       {providers.filter((p) => p.isBuiltin).map((p) => (
@@ -134,10 +158,20 @@ function AiProviderTab() {
                 {p.displayName}
                 {p.isActive && <span className="text-xs bg-green-500 text-white px-2 py-0.5 rounded-full">已激活</span>}
               </CardTitle>
-              <span className="text-xs text-muted-foreground">{p.modelName}</span>
             </div>
           </CardHeader>
           <CardContent>
+            <div className="flex flex-wrap items-end gap-3 mb-3">
+              <div className="flex-1 min-w-[200px]">
+                <label className="text-xs text-muted-foreground mb-1 block">模型名</label>
+                <Input
+                  placeholder={p.modelName || "输入模型名"}
+                  value={editingModel[p.id] ?? ""}
+                  onChange={(e) => setEditingModel((prev) => ({ ...prev, [p.id]: e.target.value }))}
+                />
+              </div>
+              <Button variant="outline" size="sm" onClick={() => handleSaveModel(p.id)} disabled={!editingModel[p.id]}>保存模型</Button>
+            </div>
             <div className="flex flex-wrap items-end gap-3">
               <div className="flex-1 min-w-[200px]">
                 <label className="text-xs text-muted-foreground mb-1 block">API Key</label>
@@ -208,7 +242,18 @@ function AiProviderTab() {
             </div>
           </CardHeader>
           <CardContent>
-            <p className="text-xs text-muted-foreground mb-2">{p.baseUrl} / {p.modelName}</p>
+            <p className="text-xs text-muted-foreground mb-2">{p.baseUrl}</p>
+            <div className="flex flex-wrap items-end gap-3 mb-3">
+              <div className="flex-1 min-w-[200px]">
+                <label className="text-xs text-muted-foreground mb-1 block">模型名</label>
+                <Input
+                  placeholder={p.modelName || "输入模型名"}
+                  value={editingModel[p.id] ?? ""}
+                  onChange={(e) => setEditingModel((prev) => ({ ...prev, [p.id]: e.target.value }))}
+                />
+              </div>
+              <Button variant="outline" size="sm" onClick={() => handleSaveModel(p.id)} disabled={!editingModel[p.id]}>保存模型</Button>
+            </div>
             <div className="flex flex-wrap items-end gap-3">
               <div className="flex-1 min-w-[200px]">
                 <label className="text-xs text-muted-foreground mb-1 block">API Key</label>
@@ -244,6 +289,7 @@ function AiProviderTab() {
 function SearchProviderTab() {
   const [providers, setProviders] = useState<SearchProvider[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [editingKey, setEditingKey] = useState<Record<number, string>>({});
   const [editingUrl, setEditingUrl] = useState<Record<number, string>>({});
   const [testing, setTesting] = useState<Record<number, boolean>>({});
@@ -252,10 +298,13 @@ function SearchProviderTab() {
 
   const fetchProviders = useCallback(async () => {
     try {
+      setError(null);
       const res: any = await apiClient.get("/v1/search/providers");
       setProviders(res.data ?? []);
-    } catch { /* ignore */ }
-    finally { setLoading(false); }
+    } catch (e: any) {
+      console.error("Failed to fetch search providers:", e);
+      setError(e?.message || "加载失败，请检查后端服务是否运行");
+    } finally { setLoading(false); }
   }, []);
 
   useEffect(() => { fetchProviders(); }, [fetchProviders]);
@@ -323,6 +372,15 @@ function SearchProviderTab() {
 
   if (loading) {
     return <div className="grid gap-4 mt-4">{Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-32 rounded-xl" />)}</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="mt-4 p-6 border border-destructive/50 rounded-lg bg-destructive/5 text-center">
+        <p className="text-sm text-destructive mb-3">{error}</p>
+        <Button variant="outline" size="sm" onClick={fetchProviders}>重试</Button>
+      </div>
+    );
   }
 
   return (
